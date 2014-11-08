@@ -50,11 +50,7 @@ public class MainActivity extends Activity {
         backgroundImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for(ResizableTextView resizableTextView : resizableTextViews){
-                    if(resizableTextView.isEditingEnabled()){
-                        resizableTextView.setEditingEnabled(false);
-                    }
-                }
+                deselectAll();
             }
         });
     }
@@ -79,6 +75,7 @@ public class MainActivity extends Activity {
                 return true;
 
             case R.id.action_add:
+                deselectAll();
                 addResizableTextView();
                 return true;
         }
@@ -119,6 +116,13 @@ public class MainActivity extends Activity {
 
 
         resizableTextView.setOnResizableTextViewListener(new ResizableTextView.OnResizableTextViewListener() {
+
+            @Override
+            public void onTouched(ResizableTextView view) {
+                deselectAll();
+                view.setEditingEnabled(true);
+            }
+
             @Override
             public void onTranslationChanged(ResizableTextView view, float translationX, float translationY) {
                 textViewTranslation.setText("x:"+translationX+" y:"+translationY);
@@ -168,5 +172,12 @@ public class MainActivity extends Activity {
         resizableTextViews.add(resizableTextView);
     }
 
+    private void deselectAll(){
+        for(ResizableTextView resizableTextView : resizableTextViews){
+            if(resizableTextView.isEditingEnabled()){
+                resizableTextView.setEditingEnabled(false);
+            }
+        }
+    }
 
 }

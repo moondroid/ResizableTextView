@@ -26,6 +26,12 @@ public class ResizableTextView extends FrameLayout {
     private boolean isEditingEnabled;
 
     private OnResizableTextViewListener listener = new OnResizableTextViewListener() {
+
+        @Override
+        public void onTouched(ResizableTextView view){
+            //do nothing
+        }
+
         @Override
         public void onTranslationChanged(ResizableTextView view, float translationX, float translationY) {
             //do nothing
@@ -46,6 +52,7 @@ public class ResizableTextView extends FrameLayout {
             //do nothing
         }
 
+        @Override
         public void onEdit(ResizableTextView view){
             //do nothing
         }
@@ -53,6 +60,7 @@ public class ResizableTextView extends FrameLayout {
 
 
     public interface OnResizableTextViewListener {
+        public void onTouched(ResizableTextView view);
         public void onTranslationChanged (ResizableTextView view, float translationX, float translationY);
         public void onSizeChanged(ResizableTextView view, float size);
         public void onRotationChanged(ResizableTextView view, float rotation);
@@ -167,9 +175,7 @@ public class ResizableTextView extends FrameLayout {
                 startX = event.getRawX();
                 startY = event.getRawY();
                 downTime = System.currentTimeMillis();
-                if(!isEditingEnabled){
-                    setEditingEnabled(true);
-                }
+                listener.onTouched(ResizableTextView.this);
 
             } else if (event.getAction() == MotionEvent.ACTION_UP) {
                 int tapTimeout = ViewConfiguration.get(ResizableTextView.this.getContext()).getTapTimeout();
