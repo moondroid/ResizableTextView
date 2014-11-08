@@ -21,7 +21,9 @@ public class ResizableTextView extends FrameLayout {
     private static final boolean SNAP_ROTATION = true;
 
     private TextView textView;
+    private View resizeView, rotateView, removeView, editView;
     private Point pivot;
+    private boolean isEditingEnabled;
 
     private OnResizableTextViewListener listener = new OnResizableTextViewListener() {
         @Override
@@ -77,15 +79,20 @@ public class ResizableTextView extends FrameLayout {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.resizable_textview, this);
         setOnTouchListener(translateTouchListener);
-        findViewById(R.id.rotate_view).setOnTouchListener(rotateTouchListener);
-        findViewById(R.id.size_view).setOnTouchListener(sizeTouchListener);
-        findViewById(R.id.remove_view).setOnClickListener(new OnClickListener() {
+
+        rotateView = findViewById(R.id.rotate_view);
+        rotateView.setOnTouchListener(rotateTouchListener);
+        resizeView = findViewById(R.id.size_view);
+        resizeView.setOnTouchListener(sizeTouchListener);
+        removeView = findViewById(R.id.remove_view);
+        removeView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onRemove();
             }
         });
-        findViewById(R.id.edit_view).setOnClickListener(new OnClickListener() {
+        editView = findViewById(R.id.edit_view);
+        editView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onEdit();
@@ -97,8 +104,30 @@ public class ResizableTextView extends FrameLayout {
             textView.setTextSize(MIN_SIZE);
         }
 
+        setEditingEnabled(false);//editing disabled by default
+
     }
 
+    public void setEditingEnabled(boolean enabled){
+        if(enabled){
+            rotateView.setVisibility(VISIBLE);
+            resizeView.setVisibility(VISIBLE);
+            removeView.setVisibility(VISIBLE);
+            editView.setVisibility(VISIBLE);
+            textView.setBackgroundResource(R.drawable.textview_border);
+        }else {
+            rotateView.setVisibility(GONE);
+            resizeView.setVisibility(GONE);
+            removeView.setVisibility(GONE);
+            editView.setVisibility(GONE);
+            textView.setBackgroundResource(android.R.color.transparent);
+        }
+        isEditingEnabled = enabled;
+    }
+
+    public boolean isEditingEnabled(){
+        return isEditingEnabled;
+    }
 
     public void setOnResizableTextViewListener(OnResizableTextViewListener listener){
         if (listener != null) {
@@ -138,6 +167,9 @@ public class ResizableTextView extends FrameLayout {
                 startX = event.getRawX();
                 startY = event.getRawY();
                 downTime = System.currentTimeMillis();
+                if(!isEditingEnabled){
+                    setEditingEnabled(true);
+                }
 
             } else if (event.getAction() == MotionEvent.ACTION_UP) {
                 int tapTimeout = ViewConfiguration.get(ResizableTextView.this.getContext()).getTapTimeout();

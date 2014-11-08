@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,12 +28,14 @@ public class MainActivity extends Activity {
 
     private ResizableTextView resizableTextView;
     private TextView textViewSize, textViewRotation, textViewTranslation;
+    private ImageView backgroundImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        backgroundImage = (ImageView)findViewById(R.id.background_image);
         resizableTextView = (ResizableTextView)findViewById(R.id.resizableview);
 
         textViewSize = (TextView)findViewById(R.id.textViewSize);
@@ -44,7 +47,7 @@ public class MainActivity extends Activity {
         textViewTranslation.setText("x:"+resizableTextView.getTranslationX()+" y:"+resizableTextView.getTranslationY());
 
 
-        resizableTextView.getTextView().setText(texts[index]);
+        resizableTextView.getTextView().setText(texts[getRandomNumber(0, texts.length-1)]);
         Typeface typeface = Typeface.createFromAsset(getAssets(), fonts[getRandomNumber(0, fonts.length-1)]);
         resizableTextView.getTextView().setTypeface(typeface);
 
@@ -52,17 +55,24 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-                index++;
-                if (index >= texts.length) {
-                    index = 0;
-                }
-
-                resizableTextView.getTextView().setText(texts[index]);
-                Typeface typeface = Typeface.createFromAsset(getAssets(), fonts[getRandomNumber(0, fonts.length - 1)]);
-                resizableTextView.getTextView().setTypeface(typeface);
+//                index++;
+//                if (index >= texts.length) {
+//                    index = 0;
+//                }
+//
+//                resizableTextView.getTextView().setText(texts[index]);
+//                Typeface typeface = Typeface.createFromAsset(getAssets(), fonts[getRandomNumber(0, fonts.length - 1)]);
+//                resizableTextView.getTextView().setTypeface(typeface);
             }
         });
 
+
+        backgroundImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resizableTextView.setEditingEnabled(false);
+            }
+        });
 
         resizableTextView.setOnResizableTextViewListener(new ResizableTextView.OnResizableTextViewListener() {
             @Override
