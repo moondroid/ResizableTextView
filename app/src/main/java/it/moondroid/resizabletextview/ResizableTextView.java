@@ -23,8 +23,6 @@ public class ResizableTextView extends FrameLayout {
     private TextView textView;
     private Point pivot;
 
-    private GestureDetector mGestureDetector;
-
     private OnResizableTextViewListener listener = new OnResizableTextViewListener() {
         @Override
         public void onTranslationChanged(float translationX, float translationY) {
@@ -51,20 +49,6 @@ public class ResizableTextView extends FrameLayout {
         }
     };
 
-    private OnClickListener onClickListener = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            //do nothing
-        }
-    };
-
-    private OnLongClickListener onLongClickListener = new OnLongClickListener() {
-
-        @Override
-        public boolean onLongClick(View v) {
-            return false;
-        }
-    };
 
     public interface OnResizableTextViewListener {
         public void onTranslationChanged (float translationX, float translationY);
@@ -113,40 +97,14 @@ public class ResizableTextView extends FrameLayout {
             textView.setTextSize(MIN_SIZE);
         }
 
-        mGestureDetector = new GestureDetector(getContext(), new ResizableTextViewGestureListener());
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        boolean result = mGestureDetector.onTouchEvent(event);
-        Log.d("ResizableTextView.onTouchEvent", "result: "+result);
-        if (result){
-            return true;
-        }else{
-            return super.onTouchEvent(event);
-        }
-    }
 
     public void setOnResizableTextViewListener(OnResizableTextViewListener listener){
         if (listener != null) {
             this.listener = listener;
         }
     }
-
-//    @Override
-//    public void setOnClickListener(OnClickListener l) {
-//        if (l!=null){
-//            onClickListener = l;
-//        }
-//    }
-
-    @Override
-    public void setOnLongClickListener(OnLongClickListener l) {
-        if (l!=null){
-            onLongClickListener = l;
-        }
-    }
-
 
 
     public TextView getTextView(){
@@ -312,44 +270,6 @@ public class ResizableTextView extends FrameLayout {
             return (float) _An;
         }
     };
-
-
-    private class ResizableTextViewGestureListener extends GestureDetector.SimpleOnGestureListener {
-        @Override
-        public boolean onDown(MotionEvent event) {
-            return true;
-        }
-
-        @Override
-        public boolean onSingleTapConfirmed(MotionEvent event) {
-            //onClickListener.onClick(ResizableTextView.this);
-            return super.onSingleTapConfirmed(event);
-        }
-
-        @Override
-        public boolean onDoubleTapEvent(MotionEvent e) {
-            Log.d("ResizableTextView.onDoubleTapEvent", "");
-            listener.onEdit();
-            return true;
-        }
-
-        @Override
-        public boolean onDoubleTap(MotionEvent e) {
-            Log.d("ResizableTextView.onDoubleTap", "");
-            return super.onDoubleTap(e);
-        }
-
-        @Override
-        public void onLongPress(MotionEvent event) {
-            Log.d("ResizableTextView.onLongPress", "");
-            onLongClickListener.onLongClick(ResizableTextView.this);
-        }
-
-        @Override
-        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            return super.onScroll(e1, e2, distanceX, distanceY);
-        }
-    }
 
     private double distance(double startX, double startY, double endX, double endY) {
         double width = startX - endX;
