@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 
@@ -30,7 +31,7 @@ public class MainActivity extends Activity {
     private int index = 0;
 
     private FrameLayout container;
-    private ResizableTextView resizableTextView;
+    private ArrayList<ResizableTextView> resizableTextViews = new ArrayList<ResizableTextView>();
     private TextView textViewSize, textViewRotation, textViewTranslation;
     private ImageView backgroundImage;
 
@@ -46,6 +47,16 @@ public class MainActivity extends Activity {
         textViewRotation = (TextView)findViewById(R.id.textViewRotation);
         textViewTranslation = (TextView)findViewById(R.id.textViewTranslation);
 
+        backgroundImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for(ResizableTextView resizableTextView : resizableTextViews){
+                    if(resizableTextView.isEditingEnabled()){
+                        resizableTextView.setEditingEnabled(false);
+                    }
+                }
+            }
+        });
     }
 
 
@@ -82,7 +93,7 @@ public class MainActivity extends Activity {
 
     private void addResizableTextView(){
 
-        resizableTextView = new ResizableTextView(this);
+        final ResizableTextView resizableTextView = new ResizableTextView(this);
         resizableTextView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER));
         container.addView(resizableTextView);
@@ -107,45 +118,38 @@ public class MainActivity extends Activity {
         });
 
 
-        backgroundImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                resizableTextView.setEditingEnabled(false);
-            }
-        });
-
         resizableTextView.setOnResizableTextViewListener(new ResizableTextView.OnResizableTextViewListener() {
             @Override
-            public void onTranslationChanged(float translationX, float translationY) {
+            public void onTranslationChanged(ResizableTextView view, float translationX, float translationY) {
                 textViewTranslation.setText("x:"+translationX+" y:"+translationY);
             }
 
             @Override
-            public void onSizeChanged(float size) {
+            public void onSizeChanged(ResizableTextView view, float size) {
                 textViewSize.setText("Size: "+size);
             }
 
             @Override
-            public void onRotationChanged(float rotation) {
+            public void onRotationChanged(ResizableTextView view, float rotation) {
                 textViewRotation.setText("Rotation: "+rotation);
             }
 
             @Override
-            public void onRemove() {
+            public void onRemove(ResizableTextView view) {
                 Toast.makeText(MainActivity.this, "close", Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onEdit() {
+            public void onEdit(final ResizableTextView view) {
                 final EditText input = new EditText(MainActivity.this);
-                input.setText(resizableTextView.getTextView().getText());
+                input.setText(view.getTextView().getText());
                 new AlertDialog.Builder(MainActivity.this)
                         .setTitle("Update Text")
                                 //.setMessage("Message")
                         .setView(input)
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                resizableTextView.getTextView().setText(input.getText().toString());
+                                view.getTextView().setText(input.getText().toString());
                             }
                         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
@@ -158,5 +162,9 @@ public class MainActivity extends Activity {
         textViewSize.setText("Size: "+resizableTextView.getTextView().getTextSize());
         textViewRotation.setText("Rotation: "+resizableTextView.getRotation());
         textViewTranslation.setText("x:"+resizableTextView.getTranslationX()+" y:"+resizableTextView.getTranslationY());
+
+        resizableTextViews.add(resizableTextView);
     }
+
+
 }

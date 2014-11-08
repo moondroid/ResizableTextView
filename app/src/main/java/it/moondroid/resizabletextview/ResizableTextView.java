@@ -27,37 +27,37 @@ public class ResizableTextView extends FrameLayout {
 
     private OnResizableTextViewListener listener = new OnResizableTextViewListener() {
         @Override
-        public void onTranslationChanged(float translationX, float translationY) {
+        public void onTranslationChanged(ResizableTextView view, float translationX, float translationY) {
             //do nothing
         }
 
         @Override
-        public void onSizeChanged(float size) {
+        public void onSizeChanged(ResizableTextView view, float size) {
             //do nothing
         }
 
         @Override
-        public void onRotationChanged(float rotation) {
+        public void onRotationChanged(ResizableTextView view, float rotation) {
             //do nothing
         }
 
         @Override
-        public void onRemove() {
+        public void onRemove(ResizableTextView view) {
             //do nothing
         }
 
-        public void onEdit(){
+        public void onEdit(ResizableTextView view){
             //do nothing
         }
     };
 
 
     public interface OnResizableTextViewListener {
-        public void onTranslationChanged (float translationX, float translationY);
-        public void onSizeChanged(float size);
-        public void onRotationChanged(float rotation);
-        public void onRemove();
-        public void onEdit();
+        public void onTranslationChanged (ResizableTextView view, float translationX, float translationY);
+        public void onSizeChanged(ResizableTextView view, float size);
+        public void onRotationChanged(ResizableTextView view, float rotation);
+        public void onRemove(ResizableTextView view);
+        public void onEdit(ResizableTextView view);
     }
 
     public ResizableTextView(Context context) {
@@ -88,14 +88,14 @@ public class ResizableTextView extends FrameLayout {
         removeView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onRemove();
+                listener.onRemove(ResizableTextView.this);
             }
         });
         editView = findViewById(R.id.edit_view);
         editView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onEdit();
+                listener.onEdit(ResizableTextView.this);
             }
         });
 
@@ -187,7 +187,7 @@ public class ResizableTextView extends FrameLayout {
 
                 setTranslationX(newTranslationX);
                 setTranslationY(newTranslationY);
-                listener.onTranslationChanged(newTranslationX, newTranslationY);
+                listener.onTranslationChanged(ResizableTextView.this, newTranslationX, newTranslationY);
             }
             return true;
         }
@@ -234,7 +234,7 @@ public class ResizableTextView extends FrameLayout {
                 if (endScale < MIN_SIZE) {
                     endScale = MIN_SIZE;
                 }
-                listener.onSizeChanged((float)endScale);
+                listener.onSizeChanged(ResizableTextView.this, (float)endScale);
                 textView.setTextSize((float)endScale);
 
             } else if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -275,7 +275,7 @@ public class ResizableTextView extends FrameLayout {
                 rotation = snapRotation(rotation);
 
                 setRotation(rotation);
-                listener.onRotationChanged(rotation);
+                listener.onRotationChanged(ResizableTextView.this, rotation);
 
             } else if(event.getAction() == MotionEvent.ACTION_UP){
                 findViewById(R.id.rotate_view).setSelected(false);
