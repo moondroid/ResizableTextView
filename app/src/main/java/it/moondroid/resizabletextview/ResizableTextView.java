@@ -104,7 +104,7 @@ public class ResizableTextView extends FrameLayout {
             textView.setTextSize(MIN_SIZE);
         }
 
-        setEditingEnabled(false);//editing disabled by default
+        setEditingEnabled(true);//editing enabled by default
 
     }
 
