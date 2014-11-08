@@ -136,7 +136,9 @@ public class MainActivity extends Activity {
 
             @Override
             public void onRemove(ResizableTextView view) {
-                Toast.makeText(MainActivity.this, "close", Toast.LENGTH_SHORT).show();
+                container.removeView(view);
+                resizableTextViews.remove(view);
+                Toast.makeText(MainActivity.this, "removed", Toast.LENGTH_SHORT).show();
             }
 
             @Override
