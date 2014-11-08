@@ -20,7 +20,8 @@
         android:text="Size: "
         android:id="@+id/textViewSize"
         android:textColor="@android:color/white"
-        android:layout_gravity="left|top" />
+        android:layout_gravity="left|top"
+        android:visibility="invisible"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -29,7 +30,8 @@
         android:text="Rotation: "
         android:id="@+id/textViewRotation"
         android:textColor="@android:color/white"
-        android:layout_gravity="right|top" />
+        android:layout_gravity="right|top"
+        android:visibility="invisible"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -38,6 +40,15 @@
         android:text="x: y:"
         android:id="@+id/textViewTranslation"
         android:textColor="@android:color/white"
-        android:layout_gravity="left|bottom" />
+        android:layout_gravity="left|bottom"
+        android:visibility="invisible"/>
+
+
+    <fragment
+        android:name="it.moondroid.resizabletextview.FontsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        tools:layout="@layout/fonts_fragment" />
 
 </FrameLayout>

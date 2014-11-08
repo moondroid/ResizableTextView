@@ -2,26 +2,33 @@ package it.moondroid.resizabletextview;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
+import it.sephiroth.android.library.widget.HListView;
 
-public class MainActivity extends Activity {
+
+public class MainActivity extends Activity implements FontsFragment.OnFontSelectedListener{
 
     private String[] texts = new String[]{"one", "two", "three", "four", "five", "this is a long text"};
     private String[] fonts = new String[]{"fonts/fontastique.ttf", "fonts/comeback_of_the_damned.otf",
@@ -32,8 +39,11 @@ public class MainActivity extends Activity {
 
     private FrameLayout container;
     private ArrayList<ResizableTextView> resizableTextViews = new ArrayList<ResizableTextView>();
+    private ResizableTextView selectedResizableTextView;
     private TextView textViewSize, textViewRotation, textViewTranslation;
     private ImageView backgroundImage;
+
+    //private HListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +63,43 @@ public class MainActivity extends Activity {
                 deselectAll();
             }
         });
+
+//        listView = (HListView)findViewById(R.id.hListFont);
+//        List<String> items = new ArrayList<String>();
+//        for( int i = 0; i < fonts.length; i++ ) {
+//            items.add( "Aa" );
+//        }
+//        //mAdapter = new TestAdapter( this, R.layout.test_item_1, android.R.id.text1, items );
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.item_font, items) {
+//
+//            @Override
+//            public View getView(int position, View convertView, ViewGroup parent) {
+//                TextView textView = (TextView)super.getView(position, convertView, parent);
+//                textView.setTypeface(Typeface.createFromAsset(getAssets(), fonts[position]));
+//
+//                return textView;
+//            }
+//        };
+//        SimpleAdapter adapter = new SimpleAdapter(this, items,R.layout.item_font, new String[]{"title",
+//                "subtitle" }, new int[] { R.id.rowTitle,
+//                R.id.rowSubtitle }){
+//
+//            @Override
+//            public View getView(int pos, View convertView, ViewGroup parent){
+//                View v = convertView;
+//                if(v== null){
+//                    LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//                    v = vi.inflate(R.layout.item_font, null);
+//                }
+//                TextView tv = (TextView)v.findViewById(R.id.rowTitle);
+//                tv.setText(items.get(pos).get("title"));
+//                tv.setTypeface(typeBold);
+//                return v;
+//            }
+//
+//        };
+//        listView.setAdapter(adapter);
+
     }
 
 
@@ -94,6 +141,7 @@ public class MainActivity extends Activity {
         resizableTextView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER));
         container.addView(resizableTextView);
+        selectedResizableTextView = resizableTextView;
 
         resizableTextView.getTextView().setText(texts[getRandomNumber(0, texts.length-1)]);
         Typeface typeface = Typeface.createFromAsset(getAssets(), fonts[getRandomNumber(0, fonts.length-1)]);
@@ -121,6 +169,7 @@ public class MainActivity extends Activity {
             public void onTouched(ResizableTextView view) {
                 deselectAll();
                 view.setEditingEnabled(true);
+                selectedResizableTextView = view;
             }
 
             @Override
@@ -180,4 +229,10 @@ public class MainActivity extends Activity {
         }
     }
 
+    @Override
+    public void onFontSelected(Typeface typeface) {
+        if (selectedResizableTextView!=null){
+            selectedResizableTextView.getTextView().setTypeface(typeface);
+        }
+    }
 }
