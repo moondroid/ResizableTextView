@@ -6,10 +6,13 @@ import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +29,7 @@ public class MainActivity extends Activity {
 
     private int index = 0;
 
+    private FrameLayout container;
     private ResizableTextView resizableTextView;
     private TextView textViewSize, textViewRotation, textViewTranslation;
     private ImageView backgroundImage;
@@ -35,17 +39,53 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        container = (FrameLayout)findViewById(R.id.container);
         backgroundImage = (ImageView)findViewById(R.id.background_image);
-        resizableTextView = (ResizableTextView)findViewById(R.id.resizableview);
 
         textViewSize = (TextView)findViewById(R.id.textViewSize);
         textViewRotation = (TextView)findViewById(R.id.textViewRotation);
         textViewTranslation = (TextView)findViewById(R.id.textViewTranslation);
 
-        textViewSize.setText("Size: "+resizableTextView.getTextView().getTextSize());
-        textViewRotation.setText("Rotation: "+resizableTextView.getRotation());
-        textViewTranslation.setText("x:"+resizableTextView.getTranslationX()+" y:"+resizableTextView.getTranslationY());
+    }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        switch (id){
+            case R.id.action_settings:
+                return true;
+
+            case R.id.action_add:
+                addResizableTextView();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private int getRandomNumber(int min, int max){
+        Random r = new Random();
+        return r.nextInt(max - min + 1) + min;
+    }
+
+    private void addResizableTextView(){
+
+        resizableTextView = new ResizableTextView(this);
+        resizableTextView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER));
+        container.addView(resizableTextView);
 
         resizableTextView.getTextView().setText(texts[getRandomNumber(0, texts.length-1)]);
         Typeface typeface = Typeface.createFromAsset(getAssets(), fonts[getRandomNumber(0, fonts.length-1)]);
@@ -101,7 +141,7 @@ public class MainActivity extends Activity {
                 input.setText(resizableTextView.getTextView().getText());
                 new AlertDialog.Builder(MainActivity.this)
                         .setTitle("Update Text")
-                        //.setMessage("Message")
+                                //.setMessage("Message")
                         .setView(input)
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
@@ -114,38 +154,9 @@ public class MainActivity extends Activity {
                 }).show();
             }
         });
-    }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        switch (id){
-            case R.id.action_settings:
-                return true;
-
-            case R.id.action_add:
-                //TODO
-                Toast.makeText(this, "add", Toast.LENGTH_SHORT).show();
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    private int getRandomNumber(int min, int max){
-        Random r = new Random();
-        return r.nextInt(max - min + 1) + min;
+        textViewSize.setText("Size: "+resizableTextView.getTextView().getTextSize());
+        textViewRotation.setText("Rotation: "+resizableTextView.getRotation());
+        textViewTranslation.setText("x:"+resizableTextView.getTranslationX()+" y:"+resizableTextView.getTranslationY());
     }
 }
