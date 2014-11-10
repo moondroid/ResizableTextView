@@ -3,13 +3,19 @@ package it.moondroid.resizabletextview;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.util.Log;
@@ -27,9 +33,14 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import it.sephiroth.android.library.widget.HListView;
@@ -40,6 +51,7 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
     private String[] texts = new String[]{"one", "two", "three", "four", "five", "this is a long text"};
 
     private int currentFontId = 0;
+    private int fileCounter = 0;
 
     private FrameLayout container;
     private ArrayList<ResizableTextView> resizableTextViews = new ArrayList<ResizableTextView>();
@@ -94,6 +106,11 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
             case R.id.action_add:
                 deselectAll();
                 addResizableTextView();
+                return true;
+
+            case R.id.action_save:
+                deselectAll();
+                saveViewToFile(container);
                 return true;
         }
 
@@ -194,7 +211,7 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         FontsFragment fontsFragment = (FontsFragment) getFragmentManager().findFragmentByTag("FontsFragment");
         if (fontsFragment!=null){
-            transaction.remove(fontsFragment).commitAllowingStateLoss();
+            transaction.remove(fontsFragment).commit();
         }
     }
 
@@ -239,4 +256,62 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
             }
         }
     }
+
+    private static Bitmap getBitmapFromView(View view) {
+        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(returnedBitmap);
+        Drawable bgDrawable =view.getBackground();
+        if (bgDrawable!=null)
+            bgDrawable.draw(canvas);
+        else
+            canvas.drawColor(Color.WHITE);
+        view.draw(canvas);
+        return returnedBitmap;
+    }
+
+    private void saveViewToFile(View view){
+
+        String appDirectoryName = getResources().getString(R.string.app_name);
+        String path = Environment.getExternalStorageDirectory().toString()+ File.separator + appDirectoryName + File.separator;
+        File folder = new File(path);
+        if (!folder.exists()) {
+            folder.mkdir();
+        }
+        OutputStream fOut = null;
+        String title = getResources().getString(R.string.app_name)+"_"+fileCounter;
+        File file = new File(path, title+".jpg"); // the File to save to
+        try {
+            fOut = new FileOutputStream(file);
+            Bitmap pictureBitmap = getBitmapFromView(view); // obtaining the Bitmap
+            pictureBitmap.compress(Bitmap.CompressFormat.JPEG, 85, fOut); // saving the Bitmap to a file compressed as a JPEG with 85% compression rate
+            fOut.flush();
+            fOut.close(); // do not forget to close the stream
+
+//            MediaStore.Images.Media.insertImage(getContentResolver(),
+//                    file.getAbsolutePath(), file.getName(), file.getName());
+
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.Images.Media.TITLE, title);
+            values.put(MediaStore.Images.Media.DESCRIPTION, title);
+            values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis ());
+            values.put(MediaStore.Images.ImageColumns.BUCKET_ID, file.toString().toLowerCase(Locale.US).hashCode());
+            values.put(MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME, appDirectoryName);
+            values.put("_data", file.getAbsolutePath());
+
+            ContentResolver cr = getContentResolver();
+            cr.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
+            fileCounter++;
+            Toast.makeText(this, "image saved", Toast.LENGTH_SHORT).show();
+
+            Log.i("MainActivity.saveViewToFile", "saved "+file.getAbsolutePath());
+        } catch (IOException e) {
+            Log.e("MainActivity.saveViewToFile", "IOException: " + e);
+        }finally {
+            //
+        }
+
+
+    }
+
 }

@@ -4,5 +4,6 @@
     <string name="app_name">ResizableTextView</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-
+    <string name="action_add_text">Add Text</string>
+    <string name="action_save">Save</string>
 </resources>
