@@ -2,6 +2,7 @@ package it.moondroid.resizabletextview;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
@@ -147,6 +148,8 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
         Typeface typeface = Typeface.createFromAsset(getAssets(), fonts[getRandomNumber(0, fonts.length-1)]);
         resizableTextView.getTextView().setTypeface(typeface);
 
+        selectView(resizableTextView);
+
         resizableTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -168,7 +171,8 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
             @Override
             public void onTouched(ResizableTextView view) {
                 deselectAll();
-                view.setEditingEnabled(true);
+                //view.setEditingEnabled(true);
+                selectView(view);
                 selectedResizableTextView = view;
             }
 
@@ -227,6 +231,23 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
                 resizableTextView.setEditingEnabled(false);
             }
         }
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FontsFragment fontsFragment = (FontsFragment) getFragmentManager().findFragmentByTag("FontsFragment");
+        if (fontsFragment!=null){
+            transaction.remove(fontsFragment).commitAllowingStateLoss();
+        }
+    }
+
+    private void selectView(ResizableTextView view){
+        view.setEditingEnabled(true);
+
+        // Create a new Fragment to be placed in the activity layout
+        FontsFragment fontsFragment = new FontsFragment();
+            // Add the fragment to the 'fragment_container' FrameLayout
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, fontsFragment, "FontsFragment").commit();
+
+
     }
 
     @Override
