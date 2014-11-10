@@ -2,6 +2,7 @@ package it.moondroid.resizabletextview;
 
 import android.content.Context;
 import android.graphics.Point;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -24,6 +25,7 @@ public class ResizableTextView extends FrameLayout {
     private View resizeView, rotateView, removeView, editView;
     private Point pivot;
     private boolean isEditingEnabled;
+    private int fontId;
 
     private OnResizableTextViewListener listener = new OnResizableTextViewListener() {
 
@@ -146,6 +148,18 @@ public class ResizableTextView extends FrameLayout {
 
     public TextView getTextView(){
         return textView;
+    }
+
+    public void setFontId(int fontId){
+        if(fontId>=0 && fontId<Assets.fonts.size()){
+            Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), Assets.fonts.get(fontId));
+            textView.setTypeface(typeface);
+            this.fontId = fontId;
+        }
+    }
+
+    public int getFontId(){
+        return fontId;
     }
 
     @Override

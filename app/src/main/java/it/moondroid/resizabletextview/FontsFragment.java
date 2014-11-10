@@ -2,12 +2,14 @@ package it.moondroid.resizabletextview;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -21,11 +23,12 @@ import it.sephiroth.android.library.widget.HListView;
  */
 public class FontsFragment extends Fragment implements AdapterView.OnItemClickListener {
 
-    private ArrayList<String> fonts = new ArrayList<String>();
-    OnFontSelectedListener mListener;
+    private static final String KEY_FONT_ID = "FontsFragment.KEY_FONT_ID";
+    private HListView mListView;
+    private OnFontSelectedListener mListener;
 
     public interface OnFontSelectedListener {
-        public void onFontSelected(Typeface typeface);
+        public void onFontSelected(int fontId, Typeface typeface);
     }
 
     @Override
@@ -38,35 +41,22 @@ public class FontsFragment extends Fragment implements AdapterView.OnItemClickLi
         }
     }
 
+    public static FontsFragment newInstance(int fontId){
+        FontsFragment f = new FontsFragment();
+        Bundle args = new Bundle();
+        args.putInt(KEY_FONT_ID, fontId);
+        f.setArguments(args);
+        return f;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fonts_fragment, container, false);
 
-//        for( int i = 1; i < 30; i++ ) {
-//            String fontPath = "fonts/simple_"+String.format("%03d", i)+".ttf";
-//            Log.d("FontsFragment", fontPath);
-//            fonts.add( fontPath );
-//        }
-        fonts.add("fonts/simple_001.ttf");
-        fonts.add("fonts/simple_002.ttf");
-        fonts.add("fonts/simple_006.ttf");
-        fonts.add("fonts/simple_007.ttf");
-        fonts.add("fonts/simple_008.ttf");
-        fonts.add("fonts/simple_010.ttf");
-        fonts.add("fonts/simple_011.ttf");
-        fonts.add("fonts/simple_012.ttf");
-        fonts.add("fonts/simple_013.ttf");
-        fonts.add("fonts/simple_015.ttf");
-        fonts.add("fonts/simple_016.ttf");
-        fonts.add("fonts/simple_018.ttf");
-        fonts.add("fonts/simple_019.ttf");
-        fonts.add("fonts/simple_020.ttf");
-        fonts.add("fonts/simple_029.ttf");
-
-        HListView listView = (HListView)view.findViewById(R.id.hListFont);
+        mListView = (HListView)view.findViewById(R.id.hListFont);
         List<String> items = new ArrayList<String>();
-        for( int i = 0; i < fonts.size(); i++ ) {
+        for( int i = 0; i < Assets.fonts.size(); i++ ) {
             items.add("Aa");
         }
         //mAdapter = new TestAdapter( this, R.layout.test_item_1, android.R.id.text1, items );
@@ -74,21 +64,28 @@ public class FontsFragment extends Fragment implements AdapterView.OnItemClickLi
 
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
-                TextView textView = (TextView)super.getView(position, convertView, parent);
-                textView.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), fonts.get(position)));
+                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View rowView = inflater.inflate(R.layout.item_font, parent, false);
+                TextView textView = (TextView) rowView.findViewById(R.id.text);
+                textView.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), Assets.fonts.get(position)));
 
-                return textView;
+                return rowView;
             }
         };
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(this);
+        mListView.setAdapter(adapter);
+        mListView.setOnItemClickListener(this);
+        mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
+        int item = getArguments().getInt(KEY_FONT_ID, 0);
+        mListView.setItemChecked(item, true);
+        mListView.smoothScrollToPosition(item);
         return view;
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), fonts.get(i));
-        mListener.onFontSelected(typeface);
+        mListView.setItemChecked(i, true);
+        Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), Assets.fonts.get(i));
+        mListener.onFontSelected(i, typeface);
     }
 }

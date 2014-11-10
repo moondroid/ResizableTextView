@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,11 +33,8 @@ import it.sephiroth.android.library.widget.HListView;
 public class MainActivity extends Activity implements FontsFragment.OnFontSelectedListener{
 
     private String[] texts = new String[]{"one", "two", "three", "four", "five", "this is a long text"};
-    private String[] fonts = new String[]{"fonts/fontastique.ttf", "fonts/comeback_of_the_damned.otf",
-            "fonts/dead_font_walking.otf", "fonts/wolfganger.otf"};
 
-
-    private int index = 0;
+    private int currentFontId = 0;
 
     private FrameLayout container;
     private ArrayList<ResizableTextView> resizableTextViews = new ArrayList<ResizableTextView>();
@@ -44,7 +42,6 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
     private TextView textViewSize, textViewRotation, textViewTranslation;
     private ImageView backgroundImage;
 
-    //private HListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,42 +61,6 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
                 deselectAll();
             }
         });
-
-//        listView = (HListView)findViewById(R.id.hListFont);
-//        List<String> items = new ArrayList<String>();
-//        for( int i = 0; i < fonts.length; i++ ) {
-//            items.add( "Aa" );
-//        }
-//        //mAdapter = new TestAdapter( this, R.layout.test_item_1, android.R.id.text1, items );
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.item_font, items) {
-//
-//            @Override
-//            public View getView(int position, View convertView, ViewGroup parent) {
-//                TextView textView = (TextView)super.getView(position, convertView, parent);
-//                textView.setTypeface(Typeface.createFromAsset(getAssets(), fonts[position]));
-//
-//                return textView;
-//            }
-//        };
-//        SimpleAdapter adapter = new SimpleAdapter(this, items,R.layout.item_font, new String[]{"title",
-//                "subtitle" }, new int[] { R.id.rowTitle,
-//                R.id.rowSubtitle }){
-//
-//            @Override
-//            public View getView(int pos, View convertView, ViewGroup parent){
-//                View v = convertView;
-//                if(v== null){
-//                    LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//                    v = vi.inflate(R.layout.item_font, null);
-//                }
-//                TextView tv = (TextView)v.findViewById(R.id.rowTitle);
-//                tv.setText(items.get(pos).get("title"));
-//                tv.setTypeface(typeBold);
-//                return v;
-//            }
-//
-//        };
-//        listView.setAdapter(adapter);
 
     }
 
@@ -145,8 +106,7 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
         selectedResizableTextView = resizableTextView;
 
         resizableTextView.getTextView().setText(texts[getRandomNumber(0, texts.length-1)]);
-        Typeface typeface = Typeface.createFromAsset(getAssets(), fonts[getRandomNumber(0, fonts.length-1)]);
-        resizableTextView.getTextView().setTypeface(typeface);
+        resizableTextView.setFontId(currentFontId);
 
         selectView(resizableTextView);
 
@@ -154,14 +114,7 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
             @Override
             public void onClick(View v) {
 
-//                index++;
-//                if (index >= texts.length) {
-//                    index = 0;
-//                }
-//
-//                resizableTextView.getTextView().setText(texts[index]);
-//                Typeface typeface = Typeface.createFromAsset(getAssets(), fonts[getRandomNumber(0, fonts.length - 1)]);
-//                resizableTextView.getTextView().setTypeface(typeface);
+                //do nothing
             }
         });
 
@@ -171,7 +124,6 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
             @Override
             public void onTouched(ResizableTextView view) {
                 deselectAll();
-                //view.setEditingEnabled(true);
                 selectView(view);
                 selectedResizableTextView = view;
             }
@@ -242,18 +194,18 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
         view.setEditingEnabled(true);
 
         // Create a new Fragment to be placed in the activity layout
-        FontsFragment fontsFragment = new FontsFragment();
+        FontsFragment fontsFragment = FontsFragment.newInstance(view.getFontId());
             // Add the fragment to the 'fragment_container' FrameLayout
             getFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, fontsFragment, "FontsFragment").commit();
 
-
     }
 
     @Override
-    public void onFontSelected(Typeface typeface) {
+    public void onFontSelected(int fontId, Typeface typeface) {
         if (selectedResizableTextView!=null){
-            selectedResizableTextView.getTextView().setTypeface(typeface);
+            currentFontId = fontId;
+            selectedResizableTextView.setFontId(currentFontId);
         }
     }
 }
