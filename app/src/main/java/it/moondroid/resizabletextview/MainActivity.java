@@ -5,8 +5,12 @@ import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.util.Log;
 import android.view.Gravity;
@@ -23,6 +27,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -61,6 +66,9 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
                 deselectAll();
             }
         });
+
+
+        handleSendImage();
 
     }
 
@@ -206,6 +214,29 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
         if (selectedResizableTextView!=null){
             currentFontId = fontId;
             selectedResizableTextView.setFontId(currentFontId);
+        }
+    }
+
+    private void handleSendImage() {
+        // Get intent, action and MIME type
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+        Log.d("MainActivity.handleSendImage", "action: "+action);
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+
+            if (type.startsWith("image/")) {
+                Uri imageUri = (Uri) getIntent().getParcelableExtra("android.intent.extra.STREAM");
+                if(imageUri != null){
+                    Log.d("MainActivity.handleSendImage", "uri: "+imageUri.toString());
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                        backgroundImage.setImageBitmap(bitmap);
+                    } catch (IOException e) {
+                        Log.e("MainActivity.handleSendImage.getBitmap", "IOException: "+e);
+                    }
+                }
+            }
         }
     }
 }
