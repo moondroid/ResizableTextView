@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -17,36 +16,30 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.text.Editable;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
-import it.sephiroth.android.library.widget.HListView;
-
 
 public class MainActivity extends Activity implements FontsFragment.OnFontSelectedListener{
+
+    private static final int REQUEST_CODE_SELECT_PICTURE = 1;
 
     private String[] texts = new String[]{"one", "two", "three", "four", "five", "this is a long text"};
 
@@ -78,7 +71,17 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
                 deselectAll();
             }
         });
-
+        backgroundImage.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+                startActivityForResult(Intent.createChooser(intent,
+                        "Select Picture"), REQUEST_CODE_SELECT_PICTURE);
+                return true;
+            }
+        });
 
         handleSendImage();
 
@@ -312,6 +315,26 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
         }
 
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_CODE_SELECT_PICTURE) {
+                Uri selectedImageUri = data.getData();
+
+                if (selectedImageUri!=null){
+                        Log.d("MainActivity.onActivityResult", "uri: "+selectedImageUri.toString());
+                        try {
+                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
+                            backgroundImage.setImageBitmap(bitmap);
+                        } catch (IOException e) {
+                            Log.e("MainActivity.onActivityResult.getBitmap", "IOException: "+e);
+                        }
+                }
+
+            }
+        }
     }
 
 }
