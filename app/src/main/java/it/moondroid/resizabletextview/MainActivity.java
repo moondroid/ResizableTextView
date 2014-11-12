@@ -113,7 +113,19 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
 
             case R.id.action_save:
                 deselectAll();
-                saveViewToFile(container);
+                Uri imageSavedUri = saveViewToFile(container);
+                if(imageSavedUri!=null){
+                    Toast.makeText(this, "image saved", Toast.LENGTH_SHORT).show();
+                }
+
+                return true;
+
+            case R.id.action_share:
+                deselectAll();
+                Uri imageShareUri = saveViewToFile(container);
+                if (imageShareUri!=null){
+                    shareImage(imageShareUri);
+                }
                 return true;
         }
 
@@ -272,8 +284,9 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
         return returnedBitmap;
     }
 
-    private void saveViewToFile(View view){
+    private Uri saveViewToFile(View view){
 
+        Uri returnUri = null;
         String appDirectoryName = getResources().getString(R.string.app_name);
         String path = Environment.getExternalStorageDirectory().toString()+ File.separator + appDirectoryName + File.separator;
         File folder = new File(path);
@@ -302,10 +315,9 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
             values.put("_data", file.getAbsolutePath());
 
             ContentResolver cr = getContentResolver();
-            cr.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            returnUri = cr.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
             fileCounter++;
-            Toast.makeText(this, "image saved", Toast.LENGTH_SHORT).show();
 
             Log.i("MainActivity.saveViewToFile", "saved "+file.getAbsolutePath());
         } catch (IOException e) {
@@ -314,7 +326,18 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
             //
         }
 
+        return returnUri;
+    }
 
+    private void shareImage(Uri uri){
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_TEXT, "text");
+        //intent.putExtra(Intent.EXTRA_TITLE, "title");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "subject");
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        startActivity(intent);
     }
 
     @Override
