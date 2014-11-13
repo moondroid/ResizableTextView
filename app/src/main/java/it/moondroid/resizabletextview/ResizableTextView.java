@@ -26,6 +26,7 @@ public class ResizableTextView extends FrameLayout {
     private Point pivot;
     private boolean isEditingEnabled;
     private int fontId;
+    private int colorId;
 
     private OnResizableTextViewListener listener = new OnResizableTextViewListener() {
 
@@ -160,6 +161,18 @@ public class ResizableTextView extends FrameLayout {
 
     public int getFontId(){
         return fontId;
+    }
+
+    public void setColorId(int colorId){
+        if(colorId>=0 && colorId<Assets.colors.size()){
+            int color = Assets.colors.get(colorId);
+            textView.setTextColor(color);
+            this.colorId = colorId;
+        }
+    }
+
+    public int getColorId(){
+        return colorId;
     }
 
     @Override

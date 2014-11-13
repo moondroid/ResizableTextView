@@ -37,13 +37,14 @@ import java.util.Locale;
 import java.util.Random;
 
 
-public class MainActivity extends Activity implements FontsFragment.OnFontSelectedListener{
+public class MainActivity extends Activity implements FontsFragment.OnFontSelectedListener, PaletteFragment.OnColorSelectedListener{
 
     private static final int REQUEST_CODE_SELECT_PICTURE = 1;
 
     private String[] texts = new String[]{"one", "two", "three", "four", "five", "this is a long text"};
 
     private int currentFontId = 0;
+    private int currentColorId = 0;
     private int fileCounter = 0;
 
     private FrameLayout container;
@@ -224,9 +225,13 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
             }
         }
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        FontsFragment fontsFragment = (FontsFragment) getFragmentManager().findFragmentByTag("FontsFragment");
-        if (fontsFragment!=null){
-            transaction.remove(fontsFragment).commit();
+//        FontsFragment fontsFragment = (FontsFragment) getFragmentManager().findFragmentByTag("FontsFragment");
+//        if (fontsFragment!=null){
+//            transaction.remove(fontsFragment).commit();
+//        }
+        PaletteFragment paletteFragment = (PaletteFragment) getFragmentManager().findFragmentByTag("PaletteFragment");
+        if (paletteFragment!=null){
+            transaction.remove(paletteFragment).commit();
         }
     }
 
@@ -234,11 +239,15 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
         view.setEditingEnabled(true);
 
         // Create a new Fragment to be placed in the activity layout
-        FontsFragment fontsFragment = FontsFragment.newInstance(view.getFontId());
-            // Add the fragment to the 'fragment_container' FrameLayout
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, fontsFragment, "FontsFragment").commit();
+//        FontsFragment fontsFragment = FontsFragment.newInstance(view.getFontId());
+//            // Add the fragment to the 'fragment_container' FrameLayout
+//            getFragmentManager().beginTransaction()
+//                    .replace(R.id.fragment_container, fontsFragment, "FontsFragment").commit();
 
+        PaletteFragment paletteFragment = PaletteFragment.newInstance(view.getColorId());
+        // Add the fragment to the 'fragment_container' FrameLayout
+        getFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, paletteFragment, "PaletteFragment").commit();
     }
 
     @Override
@@ -246,6 +255,14 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
         if (selectedResizableTextView!=null){
             currentFontId = fontId;
             selectedResizableTextView.setFontId(currentFontId);
+        }
+    }
+
+    @Override
+    public void onColorSelected(int colorId) {
+        if (selectedResizableTextView!=null){
+            currentColorId = colorId;
+            selectedResizableTextView.setColorId(currentColorId);
         }
     }
 
@@ -359,5 +376,6 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
             }
         }
     }
+
 
 }
