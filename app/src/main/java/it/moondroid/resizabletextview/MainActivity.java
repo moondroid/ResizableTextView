@@ -2,6 +2,7 @@ package it.moondroid.resizabletextview;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -225,19 +226,12 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
                 resizableTextView.setEditingEnabled(false);
             }
         }
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//        FontsFragment fontsFragment = (FontsFragment) getFragmentManager().findFragmentByTag("FontsFragment");
-//        if (fontsFragment!=null){
-//            transaction.remove(fontsFragment).commit();
-//        }
 
-//        PaletteFragment paletteFragment = (PaletteFragment) getFragmentManager().findFragmentByTag("PaletteFragment");
-//        if (paletteFragment!=null){
-//            transaction.remove(paletteFragment).commit();
-//        }
 
         EffectsMenuFragment effectsMenuFragment = (EffectsMenuFragment) getFragmentManager().findFragmentByTag("EffectsMenuFragment");
         if (effectsMenuFragment!=null){
+            getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.remove(effectsMenuFragment).commit();
         }
     }
@@ -246,15 +240,6 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
         view.setEditingEnabled(true);
 
         // Create a new Fragment to be placed in the activity layout
-//        FontsFragment fontsFragment = FontsFragment.newInstance(view.getFontId());
-//            // Add the fragment to the 'fragment_container' FrameLayout
-//            getFragmentManager().beginTransaction()
-//                    .replace(R.id.fragment_container, fontsFragment, "FontsFragment").commit();
-
-//        PaletteFragment paletteFragment = PaletteFragment.newInstance(view.getColorId());
-//        getFragmentManager().beginTransaction()
-//                .replace(R.id.fragment_container, paletteFragment, "PaletteFragment").commit();
-
         EffectsMenuFragment effectsMenuFragment = new EffectsMenuFragment();
         effectsMenuFragment.setResizableItem(view);
         getFragmentManager().beginTransaction()
@@ -263,19 +248,13 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
 
     @Override
     public void onFontSelected(int fontId, Typeface typeface) {
-//        if (selectedResizableTextView!=null){
-//            currentFontId = fontId;
-//            selectedResizableTextView.setFontId(currentFontId);
-//        }
+
         currentFontId = fontId;
     }
 
     @Override
     public void onColorSelected(int colorId) {
-//        if (selectedResizableTextView!=null){
-//            currentColorId = colorId;
-//            selectedResizableTextView.setColorId(currentColorId);
-//        }
+
         currentColorId = colorId;
     }
 
