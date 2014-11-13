@@ -9,10 +9,29 @@ import java.util.ArrayList;
  */
 public class Assets {
 
+    public static enum Effect {
+        FONT (R.drawable.ic_text_format, R.string.effect_font, FontsFragment.class),
+        COLOR (R.drawable.ic_image_palette, R.string.effect_color, PaletteFragment.class);
+
+        public final int iconId;
+        public final int labelId;
+        public final Class fragmentClass;
+
+        Effect(int iconId, int labelId, Class fragmentClass) {
+            this.iconId = iconId;
+            this.labelId = labelId;
+            this.fragmentClass = fragmentClass;
+        }
+    };
+
+    public static ArrayList<Effect> effects = new ArrayList<Effect>();
     public static ArrayList<String> fonts = new ArrayList<String>();
     public static ArrayList<Integer> colors = new ArrayList<Integer>();
 
     static {
+        effects.add(Effect.FONT);
+        effects.add(Effect.COLOR);
+
         fonts.add("fonts/simple_001.ttf");
         fonts.add("fonts/simple_002.ttf");
         fonts.add("fonts/simple_006.ttf");

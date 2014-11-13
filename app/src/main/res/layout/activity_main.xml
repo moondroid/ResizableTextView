@@ -43,7 +43,7 @@
         android:layout_gravity="left|bottom"
         android:visibility="invisible"/>
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

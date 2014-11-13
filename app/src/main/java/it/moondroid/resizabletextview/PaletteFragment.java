@@ -21,11 +21,12 @@ import it.sephiroth.android.library.widget.HListView;
 /**
  * Created by Marco on 08/11/2014.
  */
-public class PaletteFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class PaletteFragment extends Fragment implements IEffectFragment, AdapterView.OnItemClickListener {
 
     private static final String KEY_COLOR_ID = "PaletteFragment.KEY_COLOR_ID";
     private HListView mListView;
     private OnColorSelectedListener mListener;
+    private ResizableTextView mResizableTextView;
 
     public interface OnColorSelectedListener {
         public void onColorSelected(int colorId);
@@ -37,8 +38,13 @@ public class PaletteFragment extends Fragment implements AdapterView.OnItemClick
         try {
             mListener = (OnColorSelectedListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnFontSelectedListener");
+            throw new ClassCastException(activity.toString() + " must implement OnColorSelectedListener");
         }
+    }
+
+    @Override
+    public void setResizableItem(ResizableTextView resizableTextView) {
+        mResizableTextView = resizableTextView;
     }
 
     public static PaletteFragment newInstance(int colorId){
@@ -76,7 +82,8 @@ public class PaletteFragment extends Fragment implements AdapterView.OnItemClick
         mListView.setOnItemClickListener(this);
         mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
-        int item = getArguments().getInt(KEY_COLOR_ID, 0);
+        //int item = getArguments().getInt(KEY_COLOR_ID, 0);
+        int item = mResizableTextView.getColorId();
         mListView.setItemChecked(item, true);
         mListView.smoothScrollToPosition(item);
         return view;
@@ -85,6 +92,7 @@ public class PaletteFragment extends Fragment implements AdapterView.OnItemClick
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         mListView.setItemChecked(i, true);
+        mResizableTextView.setColorId(i);
         mListener.onColorSelected(i);
     }
 }

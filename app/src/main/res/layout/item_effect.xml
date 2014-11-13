@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<it.moondroid.resizabletextview.CheckableLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="48dp"
+    android:layout_height="48dp"
+    android:background="@drawable/font_selector">
+
+    <View
+        android:id="@+id/effect"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp"
+        android:gravity="center"
+        android:background="@android:color/darker_gray"/>
+
+</it.moondroid.resizabletextview.CheckableLinearLayout>

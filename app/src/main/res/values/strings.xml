@@ -7,4 +7,9 @@
     <string name="action_add_text">Add Text</string>
     <string name="action_save">Save</string>
     <string name="action_share">Share</string>
+
+    <string name="effect_font">Fonts</string>
+    <string name="effect_color">Colors</string>
+
+
 </resources>

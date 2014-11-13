@@ -148,6 +148,7 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
 
         resizableTextView.getTextView().setText(texts[getRandomNumber(0, texts.length-1)]);
         resizableTextView.setFontId(currentFontId);
+        resizableTextView.setColorId(currentColorId);
 
         selectView(resizableTextView);
 
@@ -229,9 +230,15 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
 //        if (fontsFragment!=null){
 //            transaction.remove(fontsFragment).commit();
 //        }
-        PaletteFragment paletteFragment = (PaletteFragment) getFragmentManager().findFragmentByTag("PaletteFragment");
-        if (paletteFragment!=null){
-            transaction.remove(paletteFragment).commit();
+
+//        PaletteFragment paletteFragment = (PaletteFragment) getFragmentManager().findFragmentByTag("PaletteFragment");
+//        if (paletteFragment!=null){
+//            transaction.remove(paletteFragment).commit();
+//        }
+
+        EffectsMenuFragment effectsMenuFragment = (EffectsMenuFragment) getFragmentManager().findFragmentByTag("EffectsMenuFragment");
+        if (effectsMenuFragment!=null){
+            transaction.remove(effectsMenuFragment).commit();
         }
     }
 
@@ -244,26 +251,32 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
 //            getFragmentManager().beginTransaction()
 //                    .replace(R.id.fragment_container, fontsFragment, "FontsFragment").commit();
 
-        PaletteFragment paletteFragment = PaletteFragment.newInstance(view.getColorId());
-        // Add the fragment to the 'fragment_container' FrameLayout
+//        PaletteFragment paletteFragment = PaletteFragment.newInstance(view.getColorId());
+//        getFragmentManager().beginTransaction()
+//                .replace(R.id.fragment_container, paletteFragment, "PaletteFragment").commit();
+
+        EffectsMenuFragment effectsMenuFragment = new EffectsMenuFragment();
+        effectsMenuFragment.setResizableItem(view);
         getFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, paletteFragment, "PaletteFragment").commit();
+                .replace(R.id.fragment_container, effectsMenuFragment, "EffectsMenuFragment").commit();
     }
 
     @Override
     public void onFontSelected(int fontId, Typeface typeface) {
-        if (selectedResizableTextView!=null){
-            currentFontId = fontId;
-            selectedResizableTextView.setFontId(currentFontId);
-        }
+//        if (selectedResizableTextView!=null){
+//            currentFontId = fontId;
+//            selectedResizableTextView.setFontId(currentFontId);
+//        }
+        currentFontId = fontId;
     }
 
     @Override
     public void onColorSelected(int colorId) {
-        if (selectedResizableTextView!=null){
-            currentColorId = colorId;
-            selectedResizableTextView.setColorId(currentColorId);
-        }
+//        if (selectedResizableTextView!=null){
+//            currentColorId = colorId;
+//            selectedResizableTextView.setColorId(currentColorId);
+//        }
+        currentColorId = colorId;
     }
 
     private void handleSendImage() {

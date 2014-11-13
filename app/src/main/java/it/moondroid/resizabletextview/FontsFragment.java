@@ -21,11 +21,12 @@ import it.sephiroth.android.library.widget.HListView;
 /**
  * Created by Marco on 08/11/2014.
  */
-public class FontsFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class FontsFragment extends Fragment implements IEffectFragment, AdapterView.OnItemClickListener {
 
     private static final String KEY_FONT_ID = "FontsFragment.KEY_FONT_ID";
     private HListView mListView;
     private OnFontSelectedListener mListener;
+    private ResizableTextView mResizableTextView;
 
     public interface OnFontSelectedListener {
         public void onFontSelected(int fontId, Typeface typeface);
@@ -39,6 +40,11 @@ public class FontsFragment extends Fragment implements AdapterView.OnItemClickLi
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement OnFontSelectedListener");
         }
+    }
+
+    @Override
+    public void setResizableItem(ResizableTextView resizableTextView) {
+        mResizableTextView = resizableTextView;
     }
 
     public static FontsFragment newInstance(int fontId){
@@ -76,7 +82,8 @@ public class FontsFragment extends Fragment implements AdapterView.OnItemClickLi
         mListView.setOnItemClickListener(this);
         mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
-        int item = getArguments().getInt(KEY_FONT_ID, 0);
+        //int item = getArguments().getInt(KEY_FONT_ID, 0);
+        int item = mResizableTextView.getFontId();
         mListView.setItemChecked(item, true);
         mListView.smoothScrollToPosition(item);
         return view;
@@ -86,6 +93,7 @@ public class FontsFragment extends Fragment implements AdapterView.OnItemClickLi
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         mListView.setItemChecked(i, true);
         Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), Assets.fonts.get(i));
+        mResizableTextView.setFontId(i);
         mListener.onFontSelected(i, typeface);
     }
 }
