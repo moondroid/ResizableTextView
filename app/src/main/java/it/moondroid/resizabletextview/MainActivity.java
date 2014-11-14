@@ -49,8 +49,8 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
     private int fileCounter = 0;
 
     private FrameLayout container;
-    private ArrayList<ResizableTextView> resizableTextViews = new ArrayList<ResizableTextView>();
-    private ResizableTextView selectedResizableTextView;
+    private ArrayList<ResizableLayout> resizableTextViews = new ArrayList<ResizableLayout>();
+    private ResizableLayout selectedResizableTextView;
     private TextView textViewSize, textViewRotation, textViewTranslation;
     private ImageView backgroundImage;
 
@@ -141,19 +141,20 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
 
     private void addResizableTextView(){
 
-        final ResizableTextView resizableTextView = new ResizableTextView(this);
-        resizableTextView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+        //final ResizableTextView resizableView = new ResizableTextView(this);
+        final ResizableImageView resizableView = new ResizableImageView(this);
+        resizableView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER));
-        container.addView(resizableTextView);
-        selectedResizableTextView = resizableTextView;
+        container.addView(resizableView);
+        selectedResizableTextView = resizableView;
 
-        resizableTextView.getTextView().setText(texts[getRandomNumber(0, texts.length-1)]);
-        resizableTextView.setFontId(currentFontId);
-        resizableTextView.setColorId(currentColorId);
+        //resizableTextView.getTextView().setText(texts[getRandomNumber(0, texts.length-1)]);
+//        resizableTextView.setFontId(currentFontId);
+//        resizableTextView.setColorId(currentColorId);
 
-        selectView(resizableTextView);
+        selectView(resizableView);
 
-        resizableTextView.setOnClickListener(new View.OnClickListener() {
+        resizableView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -162,48 +163,48 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
         });
 
 
-        resizableTextView.setOnResizableTextViewListener(new ResizableTextView.OnResizableTextViewListener() {
+        resizableView.setOnResizableTextViewListener(new ResizableLayout.OnResizableTextViewListener() {
 
             @Override
-            public void onTouched(ResizableTextView view) {
+            public void onTouched(ResizableLayout view) {
                 deselectAll();
                 selectView(view);
                 selectedResizableTextView = view;
             }
 
             @Override
-            public void onTranslationChanged(ResizableTextView view, float translationX, float translationY) {
-                textViewTranslation.setText("x:"+translationX+" y:"+translationY);
+            public void onTranslationChanged(ResizableLayout view, float translationX, float translationY) {
+                textViewTranslation.setText("x:" + translationX + " y:" + translationY);
             }
 
             @Override
-            public void onSizeChanged(ResizableTextView view, float size) {
-                textViewSize.setText("Size: "+size);
+            public void onSizeChanged(ResizableLayout view, float size) {
+                textViewSize.setText("Size: " + size);
             }
 
             @Override
-            public void onRotationChanged(ResizableTextView view, float rotation) {
-                textViewRotation.setText("Rotation: "+rotation);
+            public void onRotationChanged(ResizableLayout view, float rotation) {
+                textViewRotation.setText("Rotation: " + rotation);
             }
 
             @Override
-            public void onRemove(ResizableTextView view) {
+            public void onRemove(ResizableLayout view) {
                 container.removeView(view);
                 resizableTextViews.remove(view);
                 Toast.makeText(MainActivity.this, "removed", Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onEdit(final ResizableTextView view) {
+            public void onEdit(final ResizableLayout view) {
                 final EditText input = new EditText(MainActivity.this);
-                input.setText(view.getTextView().getText());
+                //input.setText(view.getTextView().getText());
                 new AlertDialog.Builder(MainActivity.this)
                         .setTitle("Update Text")
                                 //.setMessage("Message")
                         .setView(input)
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                view.getTextView().setText(input.getText().toString());
+                                //view.getTextView().setText(input.getText().toString());
                             }
                         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
@@ -213,15 +214,15 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
             }
         });
 
-        textViewSize.setText("Size: "+resizableTextView.getTextView().getTextSize());
-        textViewRotation.setText("Rotation: "+resizableTextView.getRotation());
-        textViewTranslation.setText("x:"+resizableTextView.getTranslationX()+" y:"+resizableTextView.getTranslationY());
+        //textViewSize.setText("Size: "+resizableTextView.getTextView().getTextSize());
+        textViewRotation.setText("Rotation: " + resizableView.getRotation());
+        textViewTranslation.setText("x:"+resizableView.getTranslationX()+" y:"+resizableView.getTranslationY());
 
-        resizableTextViews.add(resizableTextView);
+        resizableTextViews.add(resizableView);
     }
 
     private void deselectAll(){
-        for(ResizableTextView resizableTextView : resizableTextViews){
+        for(ResizableLayout resizableTextView : resizableTextViews){
             if(resizableTextView.isEditingEnabled()){
                 resizableTextView.setEditingEnabled(false);
             }
@@ -236,12 +237,12 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
         }
     }
 
-    private void selectView(ResizableTextView view){
+    private void selectView(ResizableLayout view){
         view.setEditingEnabled(true);
 
         // Create a new Fragment to be placed in the activity layout
         EffectsMenuFragment effectsMenuFragment = new EffectsMenuFragment();
-        effectsMenuFragment.setResizableItem(view);
+        //effectsMenuFragment.setResizableItem(view);
         getFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, effectsMenuFragment, "EffectsMenuFragment").commit();
     }
