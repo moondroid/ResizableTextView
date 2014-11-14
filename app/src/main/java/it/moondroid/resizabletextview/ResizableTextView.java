@@ -5,7 +5,7 @@ import android.graphics.Point;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.GestureDetector;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,7 +18,8 @@ import android.widget.TextView;
  */
 public class ResizableTextView extends FrameLayout {
 
-    private static final float MIN_SIZE = 20.0f;
+    private static final float TEXT_MIN_SIZE = 20.0f;
+    private static final float TEXT_DEFAULT_SIZE = 60.0f;
     private static final boolean SNAP_ROTATION = true;
 
     private TextView textView;
@@ -111,9 +112,9 @@ public class ResizableTextView extends FrameLayout {
         });
 
         textView = (TextView)findViewById(R.id.textview);
-        if(textView.getTextSize()<MIN_SIZE){
-            textView.setTextSize(MIN_SIZE);
-        }
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, TEXT_DEFAULT_SIZE);
+
+        Log.d("ResizableTextView.setup", "textView.getTextSize() = " + textView.getTextSize());
 
         setEditingEnabled(true);//editing enabled by default
 
@@ -264,11 +265,11 @@ public class ResizableTextView extends FrameLayout {
 
                 endScale = startScale * ratio;
                 Log.d("ResizableTextView.onTouch ACTION_MOVE", "endScale = " + endScale);
-                if (endScale < MIN_SIZE) {
-                    endScale = MIN_SIZE;
+                if (endScale < TEXT_MIN_SIZE) {
+                    endScale = TEXT_MIN_SIZE;
                 }
                 listener.onSizeChanged(ResizableTextView.this, (float)endScale);
-                textView.setTextSize((float)endScale);
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, (float)endScale);
 
             } else if (event.getAction() == MotionEvent.ACTION_UP) {
                 Log.d("ResizableTextView.onTouch ACTION_UP", "endScale = " + endScale);
