@@ -77,7 +77,8 @@ public class ResizableImageView extends ResizableLayout {
 //        imageView.setImageResource(Assets.stickers.get(stickerId));
         Bitmap bitmap = Assets.getBitmapFromAsset(getContext(), Assets.stickers.get(stickerId));
         if (bitmap!=null){
-            imageView.setImageBitmap(bitmap);
+
+            imageView.setImageBitmap(Assets.addShadow(bitmap));
         }
         this.stickerId = stickerId;
     }

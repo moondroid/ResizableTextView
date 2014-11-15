@@ -3,7 +3,11 @@ package it.moondroid.resizabletextview;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BlurMaskFilter;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.util.Log;
 
 import java.io.IOException;
@@ -95,5 +99,23 @@ public class Assets {
         return null;
     }
 
+    public static Bitmap addShadow(Bitmap originalBitmap){
+        BlurMaskFilter blurFilter = new BlurMaskFilter(4, BlurMaskFilter.Blur.NORMAL);
+        Paint shadowPaint = new Paint();
+        shadowPaint.setMaskFilter(blurFilter);
+
+        int[] offsetXY = new int[2];
+        Bitmap shadowImage = originalBitmap.extractAlpha(shadowPaint, offsetXY);
+        Bitmap shadowImage32 = shadowImage.copy(Bitmap.Config.ARGB_8888, true);
+
+        Canvas c = new Canvas(shadowImage32);
+        int opacity = 125;
+        int colour = (opacity & 0xFF) << 24;
+        c.drawColor(colour, PorterDuff.Mode.DST_IN);
+        //c.drawBitmap(shadowImage32, 0, 0, new Paint(Color.GRAY));
+        c.drawBitmap(originalBitmap, -offsetXY[0], -offsetXY[1], null);
+
+        return shadowImage32;
+    }
 
 }
