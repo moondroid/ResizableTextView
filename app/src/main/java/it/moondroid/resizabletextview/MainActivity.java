@@ -53,7 +53,6 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
     private ViewGroup container;
     private ArrayList<ResizableLayout> resizableTextViews = new ArrayList<ResizableLayout>();
     private ResizableLayout selectedResizableTextView;
-    private TextView textViewSize, textViewRotation, textViewTranslation;
     private ImageView backgroundImage;
 
 
@@ -64,10 +63,6 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
 
         container = (ViewGroup)findViewById(R.id.container);
         backgroundImage = (ImageView)findViewById(R.id.background_image);
-
-        textViewSize = (TextView)findViewById(R.id.textViewSize);
-        textViewRotation = (TextView)findViewById(R.id.textViewRotation);
-        textViewTranslation = (TextView)findViewById(R.id.textViewTranslation);
 
         backgroundImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,17 +188,17 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
 
             @Override
             public void onTranslationChanged(ResizableLayout view, float translationX, float translationY) {
-                textViewTranslation.setText("x:" + translationX + " y:" + translationY);
+
             }
 
             @Override
             public void onSizeChanged(ResizableLayout view, float size) {
-                textViewSize.setText("Size: " + size);
+
             }
 
             @Override
             public void onRotationChanged(ResizableLayout view, float rotation) {
-                textViewRotation.setText("Rotation: " + rotation);
+
             }
 
             @Override
@@ -238,10 +233,6 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
 
             }
         });
-
-        //textViewSize.setText("Size: "+resizableTextView.getTextView().getTextSize());
-        textViewRotation.setText("Rotation: " + resizableView.getRotation());
-        textViewTranslation.setText("x:"+resizableView.getTranslationX()+" y:"+resizableView.getTranslationY());
 
         resizableTextViews.add(resizableView);
     }

@@ -14,35 +14,6 @@
         android:scaleType="centerCrop"
         android:background="@android:color/darker_gray"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Size: "
-        android:id="@+id/textViewSize"
-        android:textColor="@android:color/white"
-        android:layout_gravity="left|top"
-        android:visibility="invisible"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Rotation: "
-        android:id="@+id/textViewRotation"
-        android:textColor="@android:color/white"
-        android:layout_gravity="right|top"
-        android:visibility="invisible"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="x: y:"
-        android:id="@+id/textViewTranslation"
-        android:textColor="@android:color/white"
-        android:layout_gravity="left|bottom"
-        android:visibility="invisible"/>
 
     <FrameLayout
         android:id="@+id/fragment_container"
