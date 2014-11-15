@@ -88,6 +88,8 @@ public class ResizableTextView extends ResizableLayout {
         return colorId;
     }
 
-
+    public TextView getTextView(){
+        return textView;
+    }
 
 }

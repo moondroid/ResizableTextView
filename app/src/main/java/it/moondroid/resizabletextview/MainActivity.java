@@ -216,21 +216,27 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
 
             @Override
             public void onEdit(final ResizableLayout view) {
-                final EditText input = new EditText(MainActivity.this);
-                //input.setText(view.getTextView().getText());
-                new AlertDialog.Builder(MainActivity.this)
-                        .setTitle("Update Text")
-                                //.setMessage("Message")
-                        .setView(input)
-                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                //view.getTextView().setText(input.getText().toString());
-                            }
-                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        // Do nothing.
-                    }
-                }).show();
+
+                if (view instanceof ResizableTextView){
+                    final EditText input = new EditText(MainActivity.this);
+                    input.setText(((ResizableTextView)view).getTextView().getText());
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setTitle("Update Text")
+                                    //.setMessage("Message")
+                            .setView(input)
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    ((ResizableTextView)view).getTextView().setText(input.getText().toString());
+                                }
+                            }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            // Do nothing.
+                        }
+                    }).show();
+                }else {
+                    Toast.makeText(MainActivity.this, "edit not enabled", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -260,11 +266,14 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
     private void selectView(ResizableLayout view){
         view.setEditingEnabled(true);
 
-        // Create a new Fragment to be placed in the activity layout
-        EffectsMenuFragment effectsMenuFragment = new EffectsMenuFragment();
-        //effectsMenuFragment.setResizableItem(view);
-        getFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, effectsMenuFragment, "EffectsMenuFragment").commit();
+        if (view instanceof ResizableTextView){
+            // Create a new Fragment to be placed in the activity layout
+            EffectsMenuFragment effectsMenuFragment = new EffectsMenuFragment();
+            effectsMenuFragment.setResizableItem((ResizableTextView) view);
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, effectsMenuFragment, "EffectsMenuFragment").commit();
+        }
+
     }
 
     @Override
