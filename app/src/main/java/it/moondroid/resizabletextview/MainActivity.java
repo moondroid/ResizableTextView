@@ -26,8 +26,11 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -48,7 +51,7 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
     private int currentColorId = 0;
     private int fileCounter = 0;
 
-    private FrameLayout container;
+    private ViewGroup container;
     private ArrayList<ResizableLayout> resizableTextViews = new ArrayList<ResizableLayout>();
     private ResizableLayout selectedResizableTextView;
     private TextView textViewSize, textViewRotation, textViewTranslation;
@@ -60,7 +63,7 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        container = (FrameLayout)findViewById(R.id.container);
+        container = (ViewGroup)findViewById(R.id.container);
         backgroundImage = (ImageView)findViewById(R.id.background_image);
 
         textViewSize = (TextView)findViewById(R.id.textViewSize);
@@ -85,6 +88,27 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
             }
         });
 
+        final FloatingActionsMenu floatingActionsMenu = (FloatingActionsMenu)findViewById(R.id.fab_add);
+
+        findViewById(R.id.fab_add_text).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(MainActivity.this, "add text", Toast.LENGTH_SHORT).show();
+                deselectAll();
+                addResizableView(new ResizableTextView(MainActivity.this));
+                floatingActionsMenu.collapse();
+            }
+        });
+        findViewById(R.id.fab_add_image).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(MainActivity.this, "add image", Toast.LENGTH_SHORT).show();
+                deselectAll();
+                addResizableView(new ResizableImageView(MainActivity.this));
+                floatingActionsMenu.collapse();
+            }
+        });
+
         handleSendImage();
 
     }
@@ -106,11 +130,6 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
 
         switch (id){
             case R.id.action_settings:
-                return true;
-
-            case R.id.action_add:
-                deselectAll();
-                addResizableTextView();
                 return true;
 
             case R.id.action_save:
@@ -139,12 +158,13 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
         return r.nextInt(max - min + 1) + min;
     }
 
-    private void addResizableTextView(){
+    private void addResizableView(final ResizableLayout resizableView){
 
-        //final ResizableTextView resizableView = new ResizableTextView(this);
-        final ResizableImageView resizableView = new ResizableImageView(this);
-        resizableView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER));
+        RelativeLayout.LayoutParams layoutParams =
+                new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        resizableView.setLayoutParams(layoutParams);
         container.addView(resizableView);
         selectedResizableTextView = resizableView;
 
