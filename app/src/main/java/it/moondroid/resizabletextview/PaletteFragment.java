@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,13 +39,14 @@ public class PaletteFragment extends Fragment implements IEffectFragment, Adapte
         try {
             mListener = (OnColorSelectedListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnColorSelectedListener");
+            //throw new ClassCastException(activity.toString() + " must implement OnColorSelectedListener");
+            Log.w("PaletteFragment", activity.toString() + " must implement OnColorSelectedListener");
         }
     }
 
     @Override
-    public void setResizableItem(ResizableTextView resizableTextView) {
-        mResizableTextView = resizableTextView;
+    public void setResizableItem(ResizableLayout resizableTextView) {
+        mResizableTextView = (ResizableTextView) resizableTextView;
     }
 
     public static PaletteFragment newInstance(int colorId){

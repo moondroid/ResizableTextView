@@ -1,7 +1,13 @@
 package it.moondroid.resizabletextview;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.util.Log;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
@@ -27,6 +33,7 @@ public class Assets {
     public static ArrayList<Effect> effects = new ArrayList<Effect>();
     public static ArrayList<String> fonts = new ArrayList<String>();
     public static ArrayList<Integer> colors = new ArrayList<Integer>();
+    public static ArrayList<String> stickers = new ArrayList<String>();
 
     static {
         effects.add(Effect.FONT);
@@ -59,8 +66,34 @@ public class Assets {
         colors.add(Color.DKGRAY);
         colors.add(Color.BLACK);
 
+        //stickers.add(R.drawable.sticker_0009);
+
+
+        for( int i = 0; i < 24; i++ ) {
+            String stickerPath = "stickers/animal_"+String.format("%04d", i)+".png";
+            Log.d("Assets", stickerPath);
+            stickers.add( stickerPath );
+        }
     }
 
+    public static Bitmap getBitmapFromAsset(Context context, String file) {
+        Bitmap bitmap;
+
+        BitmapFactory.Options op = new BitmapFactory.Options();
+        op.inPreferredConfig = Bitmap.Config.ARGB_8888;
+
+        try {
+            InputStream is = context.getAssets().open(file);
+            bitmap = BitmapFactory.decodeStream(is, null, op);
+
+            return bitmap;
+
+        }catch (IOException ex){
+            Log.e("Assets.getBitmapFromAsset", "IOException: "+ex);
+        }
+
+        return null;
+    }
 
 
 }

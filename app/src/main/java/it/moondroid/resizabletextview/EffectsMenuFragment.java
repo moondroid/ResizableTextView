@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -25,7 +24,7 @@ public class EffectsMenuFragment extends Fragment implements IEffectFragment, Ad
 
     private HListView mListView;
     private OnEffectSelectedListener mListener;
-    private ResizableTextView mResizableTextView;
+    private ResizableLayout mResizableLayout;
 
 
     @Override
@@ -48,8 +47,8 @@ public class EffectsMenuFragment extends Fragment implements IEffectFragment, Ad
     }
 
     @Override
-    public void setResizableItem(ResizableTextView resizableTextView) {
-        mResizableTextView = resizableTextView;
+    public void setResizableItem(ResizableLayout resizableTextView) {
+        mResizableLayout = resizableTextView;
     }
 
 
@@ -99,7 +98,7 @@ public class EffectsMenuFragment extends Fragment implements IEffectFragment, Ad
             Assets.Effect effect = Assets.effects.get(i);
 
             Fragment subFragment = (Fragment) effect.fragmentClass.getConstructor().newInstance();
-            ((IEffectFragment)subFragment).setResizableItem(mResizableTextView);
+            ((IEffectFragment)subFragment).setResizableItem(mResizableLayout);
 
             getFragmentManager().beginTransaction()
                     .replace(R.id.effect_container, subFragment).addToBackStack(null).commit();

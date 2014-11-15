@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,13 +39,14 @@ public class FontsFragment extends Fragment implements IEffectFragment, AdapterV
         try {
             mListener = (OnFontSelectedListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnFontSelectedListener");
+            //throw new ClassCastException(activity.toString() + " must implement OnFontSelectedListener");
+            Log.w("FontsFragment", activity.toString() + " must implement OnFontSelectedListener");
         }
     }
 
     @Override
-    public void setResizableItem(ResizableTextView resizableTextView) {
-        mResizableTextView = resizableTextView;
+    public void setResizableItem(ResizableLayout resizableTextView) {
+        mResizableTextView = (ResizableTextView) resizableTextView;
     }
 
     public static FontsFragment newInstance(int fontId){

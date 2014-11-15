@@ -1,6 +1,7 @@
 package it.moondroid.resizabletextview;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
@@ -25,6 +26,7 @@ public class ResizableImageView extends ResizableLayout {
 
     private Context context;
     private ImageView imageView;
+    private int stickerId;
 
     public ResizableImageView(Context context) {
         super(context);
@@ -37,7 +39,9 @@ public class ResizableImageView extends ResizableLayout {
         imageView = new ImageView(context);
         imageView.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
-        imageView.setImageResource(R.drawable.sticker_0009);
+//        stickerId = 0;
+//        imageView.setImageResource(Assets.stickers.get(stickerId));
+        setStickerId(0);
 
         return imageView;
     }
@@ -63,5 +67,18 @@ public class ResizableImageView extends ResizableLayout {
     @Override
     protected int getDefaultViewSize() {
         return IMAGE_DEFAULT_SIZE;
+    }
+
+    public int getStickerId(){
+        return stickerId;
+    }
+
+    public void setStickerId(int stickerId){
+//        imageView.setImageResource(Assets.stickers.get(stickerId));
+        Bitmap bitmap = Assets.getBitmapFromAsset(getContext(), Assets.stickers.get(stickerId));
+        if (bitmap!=null){
+            imageView.setImageBitmap(bitmap);
+        }
+        this.stickerId = stickerId;
     }
 }

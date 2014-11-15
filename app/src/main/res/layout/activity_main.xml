@@ -68,7 +68,7 @@
             android:id="@+id/fab_add_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fab:fab_icon="@drawable/sticker_0009"
+            fab:fab_icon="@drawable/ic_sticker"
             fab:fab_colorNormal="@color/white"
             fab:fab_colorPressed="@color/white_pressed"
             fab:fab_size="normal"/>

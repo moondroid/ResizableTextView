@@ -2,6 +2,7 @@ package it.moondroid.resizabletextview;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.ContentResolver;
@@ -18,13 +19,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -219,7 +218,7 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
 
                 if (view instanceof ResizableTextView){
                     final EditText input = new EditText(MainActivity.this);
-                    input.setText(((ResizableTextView)view).getTextView().getText());
+                    input.setText(((ResizableTextView) view).getTextView().getText());
                     new AlertDialog.Builder(MainActivity.this)
                             .setTitle("Update Text")
                                     //.setMessage("Message")
@@ -255,7 +254,7 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
         }
 
 
-        EffectsMenuFragment effectsMenuFragment = (EffectsMenuFragment) getFragmentManager().findFragmentByTag("EffectsMenuFragment");
+        Fragment effectsMenuFragment = getFragmentManager().findFragmentByTag("EffectsMenuFragment");
         if (effectsMenuFragment!=null){
             getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -269,9 +268,17 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
         if (view instanceof ResizableTextView){
             // Create a new Fragment to be placed in the activity layout
             EffectsMenuFragment effectsMenuFragment = new EffectsMenuFragment();
-            effectsMenuFragment.setResizableItem((ResizableTextView) view);
+            effectsMenuFragment.setResizableItem(view);
             getFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, effectsMenuFragment, "EffectsMenuFragment").commit();
+        }
+
+        if (view instanceof ResizableImageView){
+            // Create a new Fragment to be placed in the activity layout
+            StickersFragment stickersFragment = new StickersFragment();
+            stickersFragment.setResizableItem(view);
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, stickersFragment, "EffectsMenuFragment").commit();
         }
 
     }
