@@ -1,7 +1,13 @@
 package it.moondroid.resizabletextview;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Point;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -36,7 +42,7 @@ public class ResizableTextView extends ResizableLayout {
 
     @Override
     protected View getResizableView(Context context) {
-        textView = new TextView(context);
+        textView = new CustomTextView(context);
         textView.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         textView.setText("Hello");
@@ -92,4 +98,41 @@ public class ResizableTextView extends ResizableLayout {
         return textView;
     }
 
+    private class CustomTextView extends TextView {
+        private static final String YOUR_TEXT = "something cool";
+        private Path _arc;
+        private Paint _paintText;
+        private int textHeight;
+
+        public CustomTextView(Context context) {
+            super(context);
+
+//            _arc = new Path();
+//            //RectF oval = new RectF(50,100,200,250);
+//            RectF oval = new RectF(0, 0, getMeasuredWidth() ,getMeasuredHeight());
+//            _arc.addArc(oval, -180, 200);
+//            _paintText = new Paint(Paint.ANTI_ALIAS_FLAG);
+//            _paintText.setStyle(Paint.Style.FILL_AND_STROKE);
+//            _paintText.setColor(Color.WHITE);
+//            _paintText.setTextSize(20f);
+
+//            Rect result = new Rect();
+//            getPaint().getTextBounds(getText().toString(), 0, getText().toString().length(), result);
+//            textHeight = result.height();
+        }
+
+        @Override
+        protected void onDraw(Canvas canvas) {
+            _arc = new Path();
+
+            RectF oval = new RectF(0, 0, getMeasuredWidth() ,getMeasuredHeight());
+            _arc.addArc(oval, -180, 200);
+            Paint pathPaint = new Paint(Color.GREEN);
+            pathPaint.setStyle(Paint.Style.STROKE);
+            canvas.drawPath(_arc, pathPaint);
+
+            canvas.drawTextOnPath(getText().toString(), _arc, 0, getMeasuredHeight()/2, getPaint());
+//            invalidate();
+        }
+    }
 }
