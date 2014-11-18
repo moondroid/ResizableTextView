@@ -42,7 +42,8 @@ public class ResizableTextView extends ResizableLayout {
 
     @Override
     protected View getResizableView(Context context) {
-        textView = new CustomTextView(context);
+        //textView = new CustomTextView(context);
+        textView = new TextView(context);
         textView.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         textView.setText("Hello");
