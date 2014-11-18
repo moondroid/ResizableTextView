@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.widget.SlidingPaneLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -54,7 +56,8 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
     private ArrayList<ResizableLayout> resizableTextViews = new ArrayList<ResizableLayout>();
     private ResizableLayout selectedResizableTextView;
     private ImageView backgroundImage;
-
+    private SlidingUpPanelLayout slidingUpPanelLayout;
+    private float slidingUpPanelAnchor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +106,14 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
             }
         });
 
+        slidingUpPanelLayout = (SlidingUpPanelLayout)findViewById(R.id.sliding_layout);
+
+//        slidingUpPanelAnchor = slidingUpPanelLayout.getPanelHeight()/slidingUpPanelLayout.getMeasuredHeight();
+        slidingUpPanelAnchor = 0.1f;
+        slidingUpPanelLayout.setAnchorPoint(slidingUpPanelAnchor);
+
         handleSendImage();
+
 
     }
 
@@ -244,13 +254,17 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
             }
         }
 
-
         Fragment effectsMenuFragment = getFragmentManager().findFragmentByTag("EffectsMenuFragment");
         if (effectsMenuFragment!=null){
             getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.remove(effectsMenuFragment).commit();
         }
+
+        //slidingUpPanelLayout.setPanelHeight(0);
+        //slidingUpPanelLayout.setAnchorPoint(0.0f);
+
+        slidingUpPanelLayout.collapsePanel();
     }
 
     private void selectView(ResizableLayout view){
@@ -262,6 +276,10 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
             effectsMenuFragment.setResizableItem(view);
             getFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, effectsMenuFragment, "EffectsMenuFragment").commit();
+
+            //slidingUpPanelLayout.setPanelHeight((int) getResources().getDimension(R.dimen.panel_height));
+            slidingUpPanelLayout.setAnchorPoint(slidingUpPanelAnchor);
+            slidingUpPanelLayout.expandPanel(slidingUpPanelAnchor);
         }
 
         if (view instanceof ResizableImageView){
@@ -270,6 +288,10 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
             stickersFragment.setResizableItem(view);
             getFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, stickersFragment, "EffectsMenuFragment").commit();
+
+            //slidingUpPanelLayout.setPanelHeight((int) getResources().getDimension(R.dimen.panel_height));
+            slidingUpPanelLayout.setAnchorPoint(slidingUpPanelAnchor);
+            slidingUpPanelLayout.expandPanel(slidingUpPanelAnchor);
         }
 
     }
