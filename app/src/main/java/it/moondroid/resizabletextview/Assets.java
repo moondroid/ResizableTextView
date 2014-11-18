@@ -59,19 +59,26 @@ public class Assets {
         fonts.add("fonts/simple_020.ttf");
         fonts.add("fonts/simple_029.ttf");
 
-        colors.add(Color.RED);
-        colors.add(Color.MAGENTA);
-        colors.add(Color.BLUE);
-        colors.add(Color.CYAN);
-        colors.add(Color.GREEN);
-        colors.add(Color.YELLOW);
-        colors.add(Color.LTGRAY);
-        colors.add(Color.GRAY);
-        colors.add(Color.DKGRAY);
-        colors.add(Color.BLACK);
-
-        //stickers.add(R.drawable.sticker_0009);
-
+        colors.add(R.color.red_500);
+        colors.add(R.color.pink_500);
+        colors.add(R.color.purple_500);
+        colors.add(R.color.dark_purple_500);
+        colors.add(R.color.blue_500);
+        colors.add(R.color.light_blue_500);
+        colors.add(R.color.cyan_500);
+        colors.add(R.color.teal_500);
+        colors.add(R.color.green_500);
+        colors.add(R.color.light_green_500);
+        colors.add(R.color.lime_500);
+        colors.add(R.color.yellow_500);
+        colors.add(R.color.amber_500);
+        colors.add(R.color.orange_500);
+        colors.add(R.color.deep_orange_500);
+        colors.add(R.color.brown_500);
+        colors.add(R.color.grey_500);
+        colors.add(R.color.blue_grey_500);
+        colors.add(R.color.black);
+        colors.add(R.color.white);
 
         for( int i = 0; i < 24; i++ ) {
             String stickerPath = "stickers/animal_"+String.format("%04d", i)+".png";

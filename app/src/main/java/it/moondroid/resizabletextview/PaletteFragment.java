@@ -76,7 +76,8 @@ public class PaletteFragment extends Fragment implements IEffectFragment, Adapte
                 LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View rowView = inflater.inflate(R.layout.item_color, parent, false);
                 View colorView = rowView.findViewById(R.id.color);
-                colorView.setBackgroundColor(Assets.colors.get(position));
+                //colorView.setBackgroundColor(Assets.colors.get(position));
+                colorView.setBackgroundColor(getResources().getColor(Assets.colors.get(position)));
                 return rowView;
             }
         };

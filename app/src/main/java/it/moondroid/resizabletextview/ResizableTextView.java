@@ -28,6 +28,8 @@ public class ResizableTextView extends ResizableLayout {
 
     private static final int TEXT_MIN_SIZE = 20;
     private static final int TEXT_DEFAULT_SIZE = 60;
+    private static final int DEFAULT_COLOR_ID = 0;
+    private static final int DEFAULT_FONT_ID = 0;
 
     private int fontId;
     private int colorId;
@@ -47,6 +49,8 @@ public class ResizableTextView extends ResizableLayout {
         textView.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         textView.setText("Hello");
+        setColorId(DEFAULT_COLOR_ID);
+        setFontId(DEFAULT_FONT_ID);
 
         return textView;
     }
@@ -85,7 +89,8 @@ public class ResizableTextView extends ResizableLayout {
 
     public void setColorId(int colorId){
         if(colorId>=0 && colorId<Assets.colors.size()){
-            int color = Assets.colors.get(colorId);
+            //int color = Assets.colors.get(colorId);
+            int color = getResources().getColor(Assets.colors.get(colorId));
             textView.setTextColor(color);
             this.colorId = colorId;
         }

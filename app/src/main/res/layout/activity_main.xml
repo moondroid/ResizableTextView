@@ -28,9 +28,9 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        fab:fab_addButtonColorNormal="@color/white"
-        fab:fab_addButtonColorPressed="@color/white_pressed"
-        fab:fab_addButtonPlusIconColor="@color/half_black"
+        fab:fab_addButtonColorNormal="@color/fab_white"
+        fab:fab_addButtonColorPressed="@color/fab_white_pressed"
+        fab:fab_addButtonPlusIconColor="@color/fab_half_black"
         android:layout_marginBottom="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginEnd="16dp">
@@ -40,8 +40,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_icon="@drawable/ic_sticker"
-            fab:fab_colorNormal="@color/white"
-            fab:fab_colorPressed="@color/white_pressed"
+            fab:fab_colorNormal="@color/fab_white"
+            fab:fab_colorPressed="@color/fab_white_pressed"
             fab:fab_size="normal"/>
 
         <com.getbase.floatingactionbutton.FloatingActionButton
@@ -49,8 +49,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_icon="@drawable/ic_text_format"
-            fab:fab_colorNormal="@color/white"
-            fab:fab_colorPressed="@color/white_pressed"
+            fab:fab_colorNormal="@color/fab_white"
+            fab:fab_colorPressed="@color/fab_white_pressed"
             fab:fab_size="normal"/>
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
