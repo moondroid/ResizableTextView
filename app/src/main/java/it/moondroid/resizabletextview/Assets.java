@@ -8,16 +8,26 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+
+import it.moondroid.resizabletextview.drawables.CircleDrawable;
+import it.moondroid.resizabletextview.drawables.RectDrawable;
+import it.moondroid.resizabletextview.drawables.StarDrawable;
 
 /**
  * Created by marco.granatiero on 10/11/2014.
  */
 public class Assets {
+
+    private static final Bitmap.Config BITMAP_CONFIG = Bitmap.Config.ARGB_8888;
 
     public static enum Effect {
         FONT (R.drawable.ic_text_format, R.string.effect_font, FontsFragment.class),
@@ -38,6 +48,7 @@ public class Assets {
     public static ArrayList<String> fonts = new ArrayList<String>();
     public static ArrayList<Integer> colors = new ArrayList<Integer>();
     public static ArrayList<String> stickers = new ArrayList<String>();
+    public static ArrayList<Class<? extends Drawable>> drawables = new ArrayList<Class<? extends Drawable>>();
 
     static {
         effects.add(Effect.FONT);
@@ -85,6 +96,10 @@ public class Assets {
             Log.d("Assets", stickerPath);
             stickers.add( stickerPath );
         }
+
+        drawables.add(RectDrawable.class);
+        drawables.add(CircleDrawable.class);
+        drawables.add(StarDrawable.class);
     }
 
     public static Bitmap getBitmapFromAsset(Context context, String file) {
@@ -120,9 +135,59 @@ public class Assets {
         int colour = (opacity & 0xFF) << 24;
         c.drawColor(colour, PorterDuff.Mode.DST_IN);
         //c.drawBitmap(shadowImage32, 0, 0, new Paint(Color.GRAY));
-        c.drawBitmap(originalBitmap, -offsetXY[0], -offsetXY[1], null);
+        //c.drawBitmap(originalBitmap, -offsetXY[0], -offsetXY[1], null);
+        c.drawBitmap(originalBitmap, 0, 0, null);
 
         return shadowImage32;
     }
 
+    public static Bitmap getBitmapFromDrawable(Drawable drawable, int defaultWidth, int defaultHeight) {
+        if (drawable == null) {
+            return null;
+        }
+
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable) drawable).getBitmap();
+        }
+
+        try {
+            Bitmap bitmap;
+            int width = drawable.getIntrinsicWidth();
+            width = width > 0 ? width : defaultWidth;
+            int height = drawable.getIntrinsicHeight();
+            height = height > 0 ? height : defaultHeight;
+            bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+
+//            if (drawable instanceof ColorDrawable) {
+//                bitmap = Bitmap.createBitmap(COLORDRAWABLE_DIMENSION, COLORDRAWABLE_DIMENSION, BITMAP_CONFIG);
+//            } else {
+//                bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), BITMAP_CONFIG);
+//            }
+
+            Canvas canvas = new Canvas(bitmap);
+            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            drawable.draw(canvas);
+            return bitmap;
+        } catch (OutOfMemoryError e) {
+            return null;
+        }
+    }
+
+    public static Drawable getDrawable(int drawableId, int width, int height){
+        Drawable drawable = null;
+        try {
+            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            drawable = drawables.get(drawableId).getConstructor(Bitmap.class).newInstance(bitmap);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (java.lang.InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        return drawable;
+    }
 }

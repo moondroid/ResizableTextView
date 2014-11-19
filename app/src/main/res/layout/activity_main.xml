@@ -51,12 +51,21 @@
         fab:fab_addButtonPlusIconColor="@color/fab_half_black">
 
         <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_add_image"
+            android:id="@+id/fab_add_sticker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_colorNormal="@color/fab_white"
             fab:fab_colorPressed="@color/fab_white_pressed"
             fab:fab_icon="@drawable/ic_sticker"
+            fab:fab_size="normal" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_add_shape"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/fab_white"
+            fab:fab_colorPressed="@color/fab_white_pressed"
+            fab:fab_icon="@drawable/ic_drawables"
             fab:fab_size="normal" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton

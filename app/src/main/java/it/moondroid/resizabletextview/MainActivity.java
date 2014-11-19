@@ -18,7 +18,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.widget.SlidingPaneLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,7 +26,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
@@ -96,12 +94,21 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
                 floatingActionsMenu.collapse();
             }
         });
-        findViewById(R.id.fab_add_image).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.fab_add_sticker).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(MainActivity.this, "add image", Toast.LENGTH_SHORT).show();
                 deselectAll();
                 addResizableView(new ResizableImageView(MainActivity.this));
+                floatingActionsMenu.collapse();
+            }
+        });
+        findViewById(R.id.fab_add_shape).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(MainActivity.this, "add image", Toast.LENGTH_SHORT).show();
+                deselectAll();
+                addResizableView(new ResizableDrawable(MainActivity.this));
                 floatingActionsMenu.collapse();
             }
         });
@@ -288,6 +295,18 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
             stickersFragment.setResizableItem(view);
             getFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, stickersFragment, "EffectsMenuFragment").commit();
+
+            //slidingUpPanelLayout.setPanelHeight((int) getResources().getDimension(R.dimen.panel_height));
+            slidingUpPanelLayout.setAnchorPoint(slidingUpPanelAnchor);
+            slidingUpPanelLayout.expandPanel(slidingUpPanelAnchor);
+        }
+
+        if (view instanceof ResizableDrawable){
+            // Create a new Fragment to be placed in the activity layout
+            DrawablesFragment drawablesFragment = new DrawablesFragment();
+            drawablesFragment.setResizableItem(view);
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, drawablesFragment, "EffectsMenuFragment").commit();
 
             //slidingUpPanelLayout.setPanelHeight((int) getResources().getDimension(R.dimen.panel_height));
             slidingUpPanelLayout.setAnchorPoint(slidingUpPanelAnchor);
