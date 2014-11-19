@@ -9,15 +9,17 @@
         android:dashWidth="3dip"
         android:color="@android:color/white" />
 
+    <solid android:color="#22000000" />
+
     <corners
         android:radius="5dp">
     </corners>
 
-    <padding
-        android:bottom="20dp"
-        android:left="20dp"
-        android:right="20dp"
-        android:top="20dp">
-    </padding>
+    <!--<padding-->
+        <!--android:bottom="20dp"-->
+        <!--android:left="20dp"-->
+        <!--android:right="20dp"-->
+        <!--android:top="20dp">-->
+    <!--</padding>-->
 
 </shape>

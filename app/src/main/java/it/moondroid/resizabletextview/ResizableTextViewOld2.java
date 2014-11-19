@@ -126,7 +126,7 @@ public class ResizableTextViewOld2 extends FrameLayout {
             resizeView.setVisibility(VISIBLE);
             removeView.setVisibility(VISIBLE);
             editView.setVisibility(VISIBLE);
-            textView.setBackgroundResource(R.drawable.textview_border);
+            textView.setBackgroundResource(R.drawable.resizable_layout_background);
         }else {
             rotateView.setVisibility(GONE);
             resizeView.setVisibility(GONE);

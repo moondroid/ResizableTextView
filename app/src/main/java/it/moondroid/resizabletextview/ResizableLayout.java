@@ -2,7 +2,6 @@ package it.moondroid.resizabletextview;
 
 import android.content.Context;
 import android.graphics.Point;
-import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,7 +9,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 
 /**
  * Created by marco.granatiero on 05/11/2014.
@@ -134,7 +132,7 @@ public abstract class ResizableLayout extends FrameLayout {
             resizeView.setVisibility(VISIBLE);
             removeView.setVisibility(VISIBLE);
             editView.setVisibility(VISIBLE);
-            viewContainer.setBackgroundResource(R.drawable.textview_border);
+            viewContainer.setBackgroundResource(R.drawable.resizable_layout_background);
         }else {
             rotateView.setVisibility(GONE);
             resizeView.setVisibility(GONE);

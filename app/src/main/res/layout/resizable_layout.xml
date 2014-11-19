@@ -15,7 +15,7 @@
         android:layout_gravity="center"
         android:padding="3dp"
         android:layout_margin="12dp"
-        android:background="@drawable/textview_border"/>
+        android:background="@drawable/resizable_layout_background"/>
 
     <ImageView android:id="@+id/remove_view"
         style="@style/ResizableControl"
