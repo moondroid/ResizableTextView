@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 /**
@@ -26,7 +25,7 @@ public abstract class ResizableLayout extends FrameLayout {
     private Integer width = null;
     private Integer height = null;
 
-    private OnResizableTextViewListener listener = new OnResizableTextViewListener() {
+    private OnResizableLayoutListener listener = new OnResizableLayoutListener() {
 
         @Override
         public void onTouched(ResizableLayout view){
@@ -60,7 +59,7 @@ public abstract class ResizableLayout extends FrameLayout {
     };
 
 
-    public interface OnResizableTextViewListener {
+    public interface OnResizableLayoutListener {
         public void onTouched(ResizableLayout view);
         public void onTranslationChanged (ResizableLayout view, float translationX, float translationY);
         public void onSizeChanged(ResizableLayout view, float size);
@@ -150,7 +149,7 @@ public abstract class ResizableLayout extends FrameLayout {
         return isEditingEnabled;
     }
 
-    public void setOnResizableTextViewListener(OnResizableTextViewListener listener){
+    public void setOnResizableLayoutListener(OnResizableLayoutListener listener){
         if (listener != null) {
             this.listener = listener;
         }

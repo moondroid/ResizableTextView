@@ -194,7 +194,7 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
         });
 
 
-        resizableView.setOnResizableTextViewListener(new ResizableLayout.OnResizableTextViewListener() {
+        resizableView.setOnResizableLayoutListener(new ResizableLayout.OnResizableLayoutListener() {
 
             @Override
             public void onTouched(ResizableLayout view) {
@@ -228,7 +228,7 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
             @Override
             public void onEdit(final ResizableLayout view) {
 
-                if (view instanceof ResizableTextView){
+                if (view instanceof ResizableTextView) {
                     final EditText input = new EditText(MainActivity.this);
                     input.setText(((ResizableTextView) view).getTextView().getText());
                     new AlertDialog.Builder(MainActivity.this)
@@ -237,14 +237,14 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
                             .setView(input)
                             .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
-                                    ((ResizableTextView)view).getTextView().setText(input.getText().toString());
+                                    ((ResizableTextView) view).getTextView().setText(input.getText().toString());
                                 }
                             }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
                             // Do nothing.
                         }
                     }).show();
-                }else {
+                } else {
                     Toast.makeText(MainActivity.this, "edit not enabled", Toast.LENGTH_SHORT).show();
                 }
 
