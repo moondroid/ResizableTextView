@@ -26,6 +26,7 @@ import android.widget.TextView;
  */
 public class ResizableTextView extends ResizableLayout {
 
+    private static final String TEXT_DEFAULT = "Hello";
     private static final int TEXT_MIN_SIZE = 20;
     private static final int TEXT_DEFAULT_SIZE = 60;
     private static final int DEFAULT_COLOR_ID = 0;
@@ -48,9 +49,12 @@ public class ResizableTextView extends ResizableLayout {
         textView = new TextView(context);
         textView.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
-        textView.setText("Hello");
+        textView.setText(TEXT_DEFAULT);
+
         setColorId(DEFAULT_COLOR_ID);
         setFontId(DEFAULT_FONT_ID);
+
+        setShadow();
 
         return textView;
     }
@@ -102,6 +106,14 @@ public class ResizableTextView extends ResizableLayout {
 
     public TextView getTextView(){
         return textView;
+    }
+
+    public void setShadow(){
+        float dx = 10.0f;
+        float dy = 10.0f;
+        textView.setShadowLayer(8.0f, 10.0f, 10.0f, Color.parseColor("#77000000"));
+        int padding = (int) Math.max(dx, dy);
+        textView.setPadding(padding, padding, padding, padding);
     }
 
     private class CustomTextView extends TextView {
