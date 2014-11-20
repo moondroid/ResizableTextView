@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 /**
@@ -22,6 +23,8 @@ public abstract class ResizableLayout extends FrameLayout {
     private Point pivot;
     private boolean isEditingEnabled;
 
+    private Integer width = null;
+    private Integer height = null;
 
     private OnResizableTextViewListener listener = new OnResizableTextViewListener() {
 
@@ -107,8 +110,8 @@ public abstract class ResizableLayout extends FrameLayout {
 
         viewContainer = (FrameLayout)findViewById(R.id.view_container);
         viewContainer.addView(getResizableView(context));
+
         setViewSize(getDefaultViewSize());
-        requestLayout();
 
         Log.d("ResizableTextView.setup", "viewContainer.getTextSize() = " + viewContainer.getMeasuredWidth());
 
@@ -222,7 +225,6 @@ public abstract class ResizableLayout extends FrameLayout {
         public boolean onTouch(View v, MotionEvent event) {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
 
-
                 centerX = pivot.x + getTranslationX();
                 centerY = pivot.y + getTranslationY();
 
@@ -232,7 +234,6 @@ public abstract class ResizableLayout extends FrameLayout {
                 startSize = distance(centerX, centerY, eventX, eventY);
 
                 if (startScale==0){
-                    //startScale = viewContainer.getWidth();//TODO
                     startScale = getViewSize();
                 }
                 Log.d("ResizableTextView.onTouch ACTION_DOWN", "startScale = " + startScale);
@@ -252,6 +253,13 @@ public abstract class ResizableLayout extends FrameLayout {
                 if (endScale < getMinViewSize()) {
                     endScale = getMinViewSize();
                 }
+//                if (endScale > maxWidth){
+//                    endScale = maxWidth;
+//                }
+
+                width = (int) (endScale);
+                height = (int) (endScale);
+
                 listener.onSizeChanged(ResizableLayout.this, (float)endScale);
 
                 setViewSize((int) endScale);
@@ -265,6 +273,15 @@ public abstract class ResizableLayout extends FrameLayout {
             return true;
         }
     };
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        if ((width != null) && (height != null)) {
+            super.onMeasure(width, height);
+        } else {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        }
+    }
 
     OnTouchListener rotateTouchListener = new OnTouchListener() {
         private float startRotation = 0;
