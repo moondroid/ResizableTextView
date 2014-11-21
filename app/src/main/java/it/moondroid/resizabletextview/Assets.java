@@ -44,6 +44,17 @@ public class Assets {
         }
     };
 
+    public static enum ItemType {
+        BACKGROUND (new Effect[]{Effect.COLOR}),
+        RESIZABLE_TEXTVIEW (new Effect[]{Effect.FONT, Effect.COLOR});
+
+        public final Effect[] effects;
+
+        ItemType (Effect[] effects) {
+            this.effects = effects;
+        }
+    }
+
     public static ArrayList<Effect> effects = new ArrayList<Effect>();
     public static ArrayList<String> fonts = new ArrayList<String>();
     public static ArrayList<Integer> colors = new ArrayList<Integer>();

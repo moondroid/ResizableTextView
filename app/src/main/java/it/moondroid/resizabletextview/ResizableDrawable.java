@@ -12,7 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * Created by marco.granatiero on 05/11/2014.
  */
-public class ResizableDrawable extends ResizableLayout {
+public class ResizableDrawable extends ResizableLayout implements IEffectable {
 
     private static final int DRAWABLE_MIN_SIZE = 100;
     private static final int DRAWABLE_DEFAULT_SIZE = 200;
@@ -60,10 +60,32 @@ public class ResizableDrawable extends ResizableLayout {
         return DRAWABLE_DEFAULT_SIZE;
     }
 
+    @Override
+    public int getColorId() {
+        return 0;
+    }
+
+    @Override
+    public void setColorId(int colorId) {
+
+    }
+
+    @Override
+    public int getFontId() {
+        return 0;
+    }
+
+    @Override
+    public void setFontId(int fontId) {
+
+    }
+
+    @Override
     public int getDrawableId(){
         return drawableId;
     }
 
+    @Override
     public void setDrawableId(int drawableId){
 
         Drawable drawable = Assets.getDrawable(drawableId, DRAWABLE_DEFAULT_SIZE, DRAWABLE_DEFAULT_SIZE);
@@ -72,5 +94,15 @@ public class ResizableDrawable extends ResizableLayout {
         }
 
         this.drawableId = drawableId;
+    }
+
+    @Override
+    public int getStickerId() {
+        return 0;
+    }
+
+    @Override
+    public void setStickerId(int stickerId) {
+
     }
 }

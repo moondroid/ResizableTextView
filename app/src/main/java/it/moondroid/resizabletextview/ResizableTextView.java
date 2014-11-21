@@ -5,26 +5,17 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.Point;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
-import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
  * Created by marco.granatiero on 05/11/2014.
  */
-public class ResizableTextView extends ResizableLayout {
+public class ResizableTextView extends ResizableLayout implements IEffectable {
 
     private static final String TEXT_DEFAULT = "Hello";
     private static final int TEXT_MIN_SIZE = 20;
@@ -79,6 +70,7 @@ public class ResizableTextView extends ResizableLayout {
         return TEXT_DEFAULT_SIZE;
     }
 
+    @Override
     public void setFontId(int fontId){
         if(fontId>=0 && fontId<Assets.fonts.size()){
             Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), Assets.fonts.get(fontId));
@@ -87,10 +79,32 @@ public class ResizableTextView extends ResizableLayout {
         }
     }
 
+    @Override
+    public int getDrawableId() {
+        return 0;
+    }
+
+    @Override
+    public void setDrawableId(int drawableId) {
+
+    }
+
+    @Override
+    public int getStickerId() {
+        return 0;
+    }
+
+    @Override
+    public void setStickerId(int stickerId) {
+
+    }
+
+    @Override
     public int getFontId(){
         return fontId;
     }
 
+    @Override
     public void setColorId(int colorId){
         if(colorId>=0 && colorId<Assets.colors.size()){
             //int color = Assets.colors.get(colorId);
@@ -100,6 +114,7 @@ public class ResizableTextView extends ResizableLayout {
         }
     }
 
+    @Override
     public int getColorId(){
         return colorId;
     }

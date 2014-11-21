@@ -27,7 +27,7 @@ public class FontsFragment extends Fragment implements IEffectFragment, AdapterV
     private static final String KEY_FONT_ID = "FontsFragment.KEY_FONT_ID";
     private HListView mListView;
     private OnFontSelectedListener mListener;
-    private ResizableTextView mResizableTextView;
+    private IEffectable mEffectableItem;
 
     public interface OnFontSelectedListener {
         public void onFontSelected(int fontId, Typeface typeface);
@@ -45,8 +45,8 @@ public class FontsFragment extends Fragment implements IEffectFragment, AdapterV
     }
 
     @Override
-    public void setResizableItem(ResizableLayout resizableTextView) {
-        mResizableTextView = (ResizableTextView) resizableTextView;
+    public void setEffectableItem(IEffectable effectableItem) {
+        mEffectableItem = effectableItem;
     }
 
     public static FontsFragment newInstance(int fontId){
@@ -85,7 +85,7 @@ public class FontsFragment extends Fragment implements IEffectFragment, AdapterV
         mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
         //int item = getArguments().getInt(KEY_FONT_ID, 0);
-        int item = mResizableTextView.getFontId();
+        int item = mEffectableItem.getFontId();
         mListView.setItemChecked(item, true);
         mListView.smoothScrollToPosition(item);
         return view;
@@ -95,7 +95,7 @@ public class FontsFragment extends Fragment implements IEffectFragment, AdapterV
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         mListView.setItemChecked(i, true);
         Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), Assets.fonts.get(i));
-        mResizableTextView.setFontId(i);
+        mEffectableItem.setFontId(i);
         mListener.onFontSelected(i, typeface);
     }
 }

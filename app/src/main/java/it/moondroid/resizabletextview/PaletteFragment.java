@@ -3,7 +3,6 @@ package it.moondroid.resizabletextview;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,9 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import it.sephiroth.android.library.widget.AdapterView;
@@ -27,7 +24,7 @@ public class PaletteFragment extends Fragment implements IEffectFragment, Adapte
     private static final String KEY_COLOR_ID = "PaletteFragment.KEY_COLOR_ID";
     private HListView mListView;
     private OnColorSelectedListener mListener;
-    private ResizableTextView mResizableTextView;
+    private IEffectable mEffectableItem;
 
     public interface OnColorSelectedListener {
         public void onColorSelected(int colorId);
@@ -45,8 +42,8 @@ public class PaletteFragment extends Fragment implements IEffectFragment, Adapte
     }
 
     @Override
-    public void setResizableItem(ResizableLayout resizableTextView) {
-        mResizableTextView = (ResizableTextView) resizableTextView;
+    public void setEffectableItem(IEffectable effectableItem) {
+        mEffectableItem = effectableItem;
     }
 
     public static PaletteFragment newInstance(int colorId){
@@ -86,7 +83,7 @@ public class PaletteFragment extends Fragment implements IEffectFragment, Adapte
         mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
         //int item = getArguments().getInt(KEY_COLOR_ID, 0);
-        int item = mResizableTextView.getColorId();
+        int item = mEffectableItem.getColorId();
         mListView.setItemChecked(item, true);
         mListView.smoothScrollToPosition(item);
         return view;
@@ -95,7 +92,7 @@ public class PaletteFragment extends Fragment implements IEffectFragment, Adapte
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         mListView.setItemChecked(i, true);
-        mResizableTextView.setColorId(i);
+        mEffectableItem.setColorId(i);
         mListener.onColorSelected(i);
     }
 }

@@ -279,8 +279,8 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
 
         if (view instanceof ResizableTextView){
             // Create a new Fragment to be placed in the activity layout
-            EffectsMenuFragment effectsMenuFragment = new EffectsMenuFragment();
-            effectsMenuFragment.setResizableItem(view);
+            EffectsMenuFragment effectsMenuFragment = EffectsMenuFragment.newInstance(Assets.ItemType.RESIZABLE_TEXTVIEW);
+            effectsMenuFragment.setEffectableItem((IEffectable) view);
             getFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, effectsMenuFragment, "EffectsMenuFragment").commit();
 
@@ -292,7 +292,7 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
         if (view instanceof ResizableImageView){
             // Create a new Fragment to be placed in the activity layout
             StickersFragment stickersFragment = new StickersFragment();
-            stickersFragment.setResizableItem(view);
+            stickersFragment.setEffectableItem((IEffectable) view);
             getFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, stickersFragment, "EffectsMenuFragment").commit();
 
@@ -304,7 +304,7 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
         if (view instanceof ResizableDrawable){
             // Create a new Fragment to be placed in the activity layout
             DrawablesFragment drawablesFragment = new DrawablesFragment();
-            drawablesFragment.setResizableItem(view);
+            drawablesFragment.setEffectableItem((IEffectable) view);
             getFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, drawablesFragment, "EffectsMenuFragment").commit();
 

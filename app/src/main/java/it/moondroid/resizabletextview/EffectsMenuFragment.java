@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import it.sephiroth.android.library.widget.AdapterView;
@@ -22,9 +24,19 @@ import it.sephiroth.android.library.widget.HListView;
  */
 public class EffectsMenuFragment extends Fragment implements IEffectFragment, AdapterView.OnItemClickListener, FragmentManager.OnBackStackChangedListener {
 
+    private static final String KEY_ITEM_TYPE = "key_item_type";
     private HListView mListView;
     private OnEffectSelectedListener mListener;
-    private ResizableLayout mResizableLayout;
+    private IEffectable mEffectableItem;
+
+    public static EffectsMenuFragment newInstance (Assets.ItemType type){
+        EffectsMenuFragment f = new EffectsMenuFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(KEY_ITEM_TYPE, type);
+        f.setArguments(args);
+
+        return f;
+    }
 
 
     @Override
@@ -47,8 +59,8 @@ public class EffectsMenuFragment extends Fragment implements IEffectFragment, Ad
     }
 
     @Override
-    public void setResizableItem(ResizableLayout resizableTextView) {
-        mResizableLayout = resizableTextView;
+    public void setEffectableItem(IEffectable effectableItem) {
+        mEffectableItem = effectableItem;
     }
 
 
@@ -59,7 +71,10 @@ public class EffectsMenuFragment extends Fragment implements IEffectFragment, Ad
 
         mListView = (HListView) view.findViewById(R.id.hListEffects);
 
-        List<Assets.Effect> items = Assets.effects;
+        Assets.ItemType type = (Assets.ItemType) getArguments().getSerializable(KEY_ITEM_TYPE);
+
+//        List<Assets.Effect> items = Assets.effects;
+        final List<Assets.Effect> items = new ArrayList<Assets.Effect>(Arrays.asList(type.effects));
         ArrayAdapter<Assets.Effect> adapter = new ArrayAdapter<Assets.Effect>(getActivity(), R.layout.item_effect, items) {
 
             @Override
@@ -67,7 +82,8 @@ public class EffectsMenuFragment extends Fragment implements IEffectFragment, Ad
                 LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View rowView = inflater.inflate(R.layout.item_effect, parent, false);
                 View effectView = rowView.findViewById(R.id.effect);
-                Assets.Effect effect = Assets.effects.get(position);
+                //Assets.Effect effect = Assets.effects.get(position);
+                Assets.Effect effect = items.get(position);
                 effectView.setBackgroundResource(effect.iconId);
                 return rowView;
             }
@@ -98,7 +114,7 @@ public class EffectsMenuFragment extends Fragment implements IEffectFragment, Ad
             Assets.Effect effect = Assets.effects.get(i);
 
             Fragment subFragment = (Fragment) effect.fragmentClass.getConstructor().newInstance();
-            ((IEffectFragment)subFragment).setResizableItem(mResizableLayout);
+            ((IEffectFragment)subFragment).setEffectableItem(mEffectableItem);
 
             getFragmentManager().beginTransaction()
                     .replace(R.id.effect_container, subFragment).addToBackStack(null).commit();

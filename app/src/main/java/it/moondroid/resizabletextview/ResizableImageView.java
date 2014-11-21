@@ -19,7 +19,7 @@ import android.widget.RelativeLayout;
 /**
  * Created by marco.granatiero on 05/11/2014.
  */
-public class ResizableImageView extends ResizableLayout {
+public class ResizableImageView extends ResizableLayout implements IEffectable {
 
     private static final int IMAGE_MIN_SIZE = 100;
     private static final int IMAGE_DEFAULT_SIZE = 200;
@@ -69,10 +69,42 @@ public class ResizableImageView extends ResizableLayout {
         return IMAGE_DEFAULT_SIZE;
     }
 
+    @Override
+    public int getColorId() {
+        return 0;
+    }
+
+    @Override
+    public void setColorId(int colorId) {
+
+    }
+
+    @Override
+    public int getFontId() {
+        return 0;
+    }
+
+    @Override
+    public void setFontId(int fontId) {
+
+    }
+
+    @Override
+    public int getDrawableId() {
+        return 0;
+    }
+
+    @Override
+    public void setDrawableId(int drawableId) {
+
+    }
+
+    @Override
     public int getStickerId(){
         return stickerId;
     }
 
+    @Override
     public void setStickerId(int stickerId){
 //        imageView.setImageResource(Assets.stickers.get(stickerId));
         Bitmap bitmap = Assets.getBitmapFromAsset(getContext(), Assets.stickers.get(stickerId));

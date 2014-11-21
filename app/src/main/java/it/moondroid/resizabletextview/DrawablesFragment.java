@@ -32,7 +32,7 @@ public class DrawablesFragment extends Fragment implements IEffectFragment, Adap
     private static final int DRAWABLE_DEFAULT_COLOR = Color.GRAY;
     private HListView mListView;
     private OnDrawableSelectedListener mListener;
-    private ResizableDrawable mResizableDrawable;
+    private IEffectable mEffectableItem;
 
     public interface OnDrawableSelectedListener {
         public void onDrawableSelected(int drawableId);
@@ -57,8 +57,8 @@ public class DrawablesFragment extends Fragment implements IEffectFragment, Adap
     }
 
     @Override
-    public void setResizableItem(ResizableLayout resizableTextView) {
-        mResizableDrawable = (ResizableDrawable) resizableTextView;
+    public void setEffectableItem(IEffectable effectableItem) {
+        mEffectableItem = effectableItem;
     }
 
     public static DrawablesFragment newInstance(int drawableId){
@@ -100,7 +100,7 @@ public class DrawablesFragment extends Fragment implements IEffectFragment, Adap
         mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
         //int item = getArguments().getInt(DRAWABLE_ID, 0);
-        int item = mResizableDrawable.getDrawableId();
+        int item = mEffectableItem.getDrawableId();
         mListView.setItemChecked(item, true);
         mListView.smoothScrollToPosition(item);
         return view;
@@ -109,7 +109,7 @@ public class DrawablesFragment extends Fragment implements IEffectFragment, Adap
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         mListView.setItemChecked(i, true);
-        mResizableDrawable.setDrawableId(i);
+        mEffectableItem.setDrawableId(i);
         mListener.onDrawableSelected(i);
     }
 

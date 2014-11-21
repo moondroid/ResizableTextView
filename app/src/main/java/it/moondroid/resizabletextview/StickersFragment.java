@@ -26,7 +26,7 @@ public class StickersFragment extends Fragment implements IEffectFragment, Adapt
     private static final String STICKER_ID = "StickersFragment.STICKER_ID";
     private HListView mListView;
     private OnStickerSelectedListener mListener;
-    private ResizableImageView mResizableImageView;
+    private IEffectable mEffectableItem;
 
     public interface OnStickerSelectedListener {
         public void onStickerSelected(int stickerId);
@@ -50,8 +50,8 @@ public class StickersFragment extends Fragment implements IEffectFragment, Adapt
     }
 
     @Override
-    public void setResizableItem(ResizableLayout resizableTextView) {
-        mResizableImageView = (ResizableImageView) resizableTextView;
+    public void setEffectableItem(IEffectable effectableItem) {
+        mEffectableItem = effectableItem;
     }
 
     public static StickersFragment newInstance(int stickerId){
@@ -92,7 +92,7 @@ public class StickersFragment extends Fragment implements IEffectFragment, Adapt
         mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
         //int item = getArguments().getInt(STICKER_ID, 0);
-        int item = mResizableImageView.getStickerId();
+        int item = mEffectableItem.getStickerId();
         mListView.setItemChecked(item, true);
         mListView.smoothScrollToPosition(item);
         return view;
@@ -101,7 +101,7 @@ public class StickersFragment extends Fragment implements IEffectFragment, Adapt
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         mListView.setItemChecked(i, true);
-        mResizableImageView.setStickerId(i);
+        mEffectableItem.setStickerId(i);
         mListener.onStickerSelected(i);
     }
 }
