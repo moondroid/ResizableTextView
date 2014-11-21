@@ -29,6 +29,8 @@ public class EffectsMenuFragment extends Fragment implements IEffectFragment, Ad
     private OnEffectSelectedListener mListener;
     private IEffectable mEffectableItem;
 
+    private List<Assets.Effect> effectItems;
+
     public static EffectsMenuFragment newInstance (Assets.ItemType type){
         EffectsMenuFragment f = new EffectsMenuFragment();
         Bundle args = new Bundle();
@@ -74,16 +76,15 @@ public class EffectsMenuFragment extends Fragment implements IEffectFragment, Ad
         Assets.ItemType type = (Assets.ItemType) getArguments().getSerializable(KEY_ITEM_TYPE);
 
 //        List<Assets.Effect> items = Assets.effects;
-        final List<Assets.Effect> items = new ArrayList<Assets.Effect>(Arrays.asList(type.effects));
-        ArrayAdapter<Assets.Effect> adapter = new ArrayAdapter<Assets.Effect>(getActivity(), R.layout.item_effect, items) {
+        effectItems = new ArrayList<Assets.Effect>(Arrays.asList(type.effects));
+        ArrayAdapter<Assets.Effect> adapter = new ArrayAdapter<Assets.Effect>(getActivity(), R.layout.item_effect, effectItems) {
 
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View rowView = inflater.inflate(R.layout.item_effect, parent, false);
                 View effectView = rowView.findViewById(R.id.effect);
-                //Assets.Effect effect = Assets.effects.get(position);
-                Assets.Effect effect = items.get(position);
+                Assets.Effect effect = effectItems.get(position);
                 effectView.setBackgroundResource(effect.iconId);
                 return rowView;
             }
@@ -111,7 +112,8 @@ public class EffectsMenuFragment extends Fragment implements IEffectFragment, Ad
         mListView.setVisibility(View.GONE);
 
         try {
-            Assets.Effect effect = Assets.effects.get(i);
+
+            Assets.Effect effect = effectItems.get(i);
 
             Fragment subFragment = (Fragment) effect.fragmentClass.getConstructor().newInstance();
             ((IEffectFragment)subFragment).setEffectableItem(mEffectableItem);

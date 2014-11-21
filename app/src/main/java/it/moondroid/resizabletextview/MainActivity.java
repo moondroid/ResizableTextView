@@ -53,7 +53,7 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
     private ViewGroup container;
     private ArrayList<ResizableLayout> resizableLayouts = new ArrayList<ResizableLayout>();
     private ResizableLayout selectedResizableTextView;
-    private ImageView backgroundImage;
+    private EffectableImageView backgroundImage;
     private SlidingUpPanelLayout slidingUpPanelLayout;
     private float slidingUpPanelAnchor;
 
@@ -63,12 +63,21 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
         setContentView(R.layout.activity_main);
 
         container = (ViewGroup)findViewById(R.id.container);
-        backgroundImage = (ImageView)findViewById(R.id.background_image);
+        backgroundImage = (EffectableImageView)findViewById(R.id.background_image);
 
         backgroundImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 deselectAll();
+
+                EffectsMenuFragment effectsMenuFragment = EffectsMenuFragment.newInstance(Assets.ItemType.BACKGROUND);
+                effectsMenuFragment.setEffectableItem((EffectableImageView)v);
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, effectsMenuFragment, "EffectsMenuFragment").commit();
+
+                //slidingUpPanelLayout.setPanelHeight((int) getResources().getDimension(R.dimen.panel_height));
+                slidingUpPanelLayout.setAnchorPoint(slidingUpPanelAnchor);
+                slidingUpPanelLayout.expandPanel(slidingUpPanelAnchor);
             }
         });
 //        backgroundImage.setOnLongClickListener(new View.OnLongClickListener() {

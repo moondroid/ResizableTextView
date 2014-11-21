@@ -19,7 +19,7 @@
             android:background="@android:color/black"
             tools:context=".MainActivity">
 
-            <ImageView
+            <it.moondroid.resizabletextview.EffectableImageView
                 android:id="@+id/background_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
