@@ -312,7 +312,8 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
 
         if (view instanceof ResizableDrawable){
             // Create a new Fragment to be placed in the activity layout
-            DrawablesFragment drawablesFragment = new DrawablesFragment();
+            EffectsMenuFragment drawablesFragment = EffectsMenuFragment.newInstance(Assets.ItemType.RESIZABLE_DRAWABLE);
+
             drawablesFragment.setEffectableItem((IEffectable) view);
             getFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, drawablesFragment, "EffectsMenuFragment").commit();

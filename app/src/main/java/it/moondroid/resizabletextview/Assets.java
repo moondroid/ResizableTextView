@@ -31,7 +31,8 @@ public class Assets {
 
     public static enum Effect {
         FONT (R.drawable.ic_text_format, R.string.effect_font, FontsFragment.class),
-        COLOR (R.drawable.ic_image_palette, R.string.effect_color, PaletteFragment.class);
+        COLOR (R.drawable.ic_image_palette, R.string.effect_color, PaletteFragment.class),
+        SHAPE (R.drawable.ic_drawables, R.string.effect_color, DrawablesFragment.class);
 
         public final int iconId;
         public final int labelId;
@@ -46,7 +47,8 @@ public class Assets {
 
     public static enum ItemType {
         BACKGROUND (new Effect[]{Effect.COLOR}),
-        RESIZABLE_TEXTVIEW (new Effect[]{Effect.FONT, Effect.COLOR});
+        RESIZABLE_TEXTVIEW (new Effect[]{Effect.FONT, Effect.COLOR}),
+        RESIZABLE_DRAWABLE (new Effect[]{Effect.SHAPE, Effect.COLOR});
 
         public final Effect[] effects;
 

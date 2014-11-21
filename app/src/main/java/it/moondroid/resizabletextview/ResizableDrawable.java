@@ -2,6 +2,7 @@ package it.moondroid.resizabletextview;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ public class ResizableDrawable extends ResizableLayout implements IEffectable {
     private Context context;
     private ImageView imageView;
     private int drawableId;
+    private int colorId;
 
     public ResizableDrawable(Context context) {
         super(context);
@@ -62,12 +64,16 @@ public class ResizableDrawable extends ResizableLayout implements IEffectable {
 
     @Override
     public int getColorId() {
-        return 0;
+        return colorId;
     }
 
     @Override
     public void setColorId(int colorId) {
-
+        if(colorId>=0 && colorId<Assets.colors.size()){
+            int color = getResources().getColor(Assets.colors.get(colorId));
+            imageView.setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+            this.colorId = colorId;
+        }
     }
 
     @Override
