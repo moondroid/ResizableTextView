@@ -71,17 +71,17 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
                 deselectAll();
             }
         });
-        backgroundImage.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/*");
-                startActivityForResult(Intent.createChooser(intent,
-                        "Select Picture"), REQUEST_CODE_SELECT_PICTURE);
-                return true;
-            }
-        });
+//        backgroundImage.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                Intent intent = new Intent();
+//                intent.setAction(Intent.ACTION_GET_CONTENT);
+//                intent.setType("image/*");
+//                startActivityForResult(Intent.createChooser(intent,
+//                        "Select Picture"), REQUEST_CODE_SELECT_PICTURE);
+//                return true;
+//            }
+//        });
 
         final FloatingActionsMenu floatingActionsMenu = (FloatingActionsMenu)findViewById(R.id.fab_add);
 
