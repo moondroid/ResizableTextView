@@ -51,7 +51,7 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
     private int fileCounter = 0;
 
     private ViewGroup container;
-    private ArrayList<ResizableLayout> resizableTextViews = new ArrayList<ResizableLayout>();
+    private ArrayList<ResizableLayout> resizableLayouts = new ArrayList<ResizableLayout>();
     private ResizableLayout selectedResizableTextView;
     private ImageView backgroundImage;
     private SlidingUpPanelLayout slidingUpPanelLayout;
@@ -221,7 +221,7 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
             @Override
             public void onRemove(ResizableLayout view) {
                 container.removeView(view);
-                resizableTextViews.remove(view);
+                resizableLayouts.remove(view);
                 Toast.makeText(MainActivity.this, "removed", Toast.LENGTH_SHORT).show();
             }
 
@@ -251,13 +251,13 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
             }
         });
 
-        resizableTextViews.add(resizableView);
+        resizableLayouts.add(resizableView);
     }
 
     private void deselectAll(){
-        for(ResizableLayout resizableTextView : resizableTextViews){
-            if(resizableTextView.isEditingEnabled()){
-                resizableTextView.setEditingEnabled(false);
+        for(ResizableLayout resizableLayout : resizableLayouts){
+            if(resizableLayout.isEditingEnabled()){
+                resizableLayout.setEditingEnabled(false);
             }
         }
 
