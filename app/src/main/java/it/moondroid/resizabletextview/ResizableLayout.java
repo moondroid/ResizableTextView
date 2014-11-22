@@ -1,7 +1,10 @@
 package it.moondroid.resizabletextview;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +16,7 @@ import android.widget.FrameLayout;
 /**
  * Created by marco.granatiero on 05/11/2014.
  */
-public abstract class ResizableLayout extends FrameLayout {
+public abstract class ResizableLayout extends FrameLayout implements IEffectable {
 
     private static final boolean SNAP_ROTATION = true;
 
@@ -24,6 +27,8 @@ public abstract class ResizableLayout extends FrameLayout {
 
     private Integer width = null;
     private Integer height = null;
+
+    protected int drawableId;
 
     private OnResizableLayoutListener listener = new OnResizableLayoutListener() {
 
@@ -267,6 +272,7 @@ public abstract class ResizableLayout extends FrameLayout {
                 Log.d("ResizableTextView.onTouch ACTION_UP", "endScale = " + endScale);
                 startScale = endScale;
                 findViewById(R.id.size_view).setSelected(false);
+                setDrawableId(drawableId);
             }
 
             return true;
@@ -355,5 +361,46 @@ public abstract class ResizableLayout extends FrameLayout {
             }
         }
         return rotation;
+    }
+
+
+    @Override
+    public int getColorId() {
+        return 0;
+    }
+
+    @Override
+    public void setColorId(int colorId) {
+
+    }
+
+    @Override
+    public int getFontId() {
+        return 0;
+    }
+
+    @Override
+    public void setFontId(int fontId) {
+
+    }
+
+    @Override
+    public int getDrawableId(){
+        return 0;
+    }
+
+    @Override
+    public void setDrawableId(int drawableId){
+
+    }
+
+    @Override
+    public int getStickerId() {
+        return 0;
+    }
+
+    @Override
+    public void setStickerId(int stickerId) {
+
     }
 }

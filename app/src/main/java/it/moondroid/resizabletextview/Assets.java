@@ -135,6 +135,15 @@ public class Assets {
     }
 
     public static Bitmap addShadow(Bitmap originalBitmap){
+
+        Bitmap shadowBitmap = getShadow(originalBitmap);
+        Canvas c = new Canvas(shadowBitmap);
+        c.drawBitmap(originalBitmap, 0, 0, null);
+
+        return shadowBitmap;
+    }
+
+    public static Bitmap getShadow(Bitmap originalBitmap){
         BlurMaskFilter blurFilter = new BlurMaskFilter(4, BlurMaskFilter.Blur.NORMAL);
         Paint shadowPaint = new Paint();
         shadowPaint.setMaskFilter(blurFilter);
@@ -149,7 +158,6 @@ public class Assets {
         c.drawColor(colour, PorterDuff.Mode.DST_IN);
         //c.drawBitmap(shadowImage32, 0, 0, new Paint(Color.GRAY));
         //c.drawBitmap(originalBitmap, -offsetXY[0], -offsetXY[1], null);
-        c.drawBitmap(originalBitmap, 0, 0, null);
 
         return shadowImage32;
     }

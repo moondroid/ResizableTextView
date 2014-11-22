@@ -13,14 +13,14 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * Created by marco.granatiero on 05/11/2014.
  */
-public class ResizableDrawable extends ResizableLayout implements IEffectable {
+public class ResizableDrawable extends ResizableLayout {
 
     private static final int DRAWABLE_MIN_SIZE = 100;
     private static final int DRAWABLE_DEFAULT_SIZE = 200;
 
     private Context context;
     private ImageView imageView;
-    private int drawableId;
+
     private int colorId;
 
     public ResizableDrawable(Context context) {
@@ -77,16 +77,6 @@ public class ResizableDrawable extends ResizableLayout implements IEffectable {
     }
 
     @Override
-    public int getFontId() {
-        return 0;
-    }
-
-    @Override
-    public void setFontId(int fontId) {
-
-    }
-
-    @Override
     public int getDrawableId(){
         return drawableId;
     }
@@ -94,21 +84,25 @@ public class ResizableDrawable extends ResizableLayout implements IEffectable {
     @Override
     public void setDrawableId(int drawableId){
 
-        Drawable drawable = Assets.getDrawable(drawableId, DRAWABLE_DEFAULT_SIZE, DRAWABLE_DEFAULT_SIZE);
+        int drawableSize = DRAWABLE_DEFAULT_SIZE;
+        if(getMeasuredWidth()!=0 && getMeasuredHeight()!=0){
+            drawableSize = getMeasuredWidth();
+        }
+
+        Drawable drawable = Assets.getDrawable(drawableId, drawableSize, drawableSize);
         if(drawable != null){
             imageView.setImageDrawable(drawable);
+
+            Bitmap bitmap = Assets.getBitmapFromDrawable(drawable, drawableSize, drawableSize);
+            if (bitmap!=null){
+                imageView.setImageBitmap(Assets.addShadow(bitmap));
+            }
+
         }
+
 
         this.drawableId = drawableId;
     }
 
-    @Override
-    public int getStickerId() {
-        return 0;
-    }
 
-    @Override
-    public void setStickerId(int stickerId) {
-
-    }
 }
