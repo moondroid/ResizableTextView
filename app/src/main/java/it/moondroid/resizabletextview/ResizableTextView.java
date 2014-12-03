@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import it.moondroid.resizabletextview.entities.Shadow;
+
 /**
  * Created by marco.granatiero on 05/11/2014.
  */
@@ -25,9 +27,14 @@ public class ResizableTextView extends ResizableLayout implements IEffectable {
 
     private int fontId;
     private int colorId;
+    private int textSize;
 
     private Context context;
     private TextView textView;
+
+    private Shadow shadow = new Shadow();
+    private int shadowWidth = 0;
+    private int shadowHeight = 0;
 
     public ResizableTextView(Context context) {
         super(context);
@@ -45,14 +52,13 @@ public class ResizableTextView extends ResizableLayout implements IEffectable {
         setColorId(DEFAULT_COLOR_ID);
         setFontId(DEFAULT_FONT_ID);
 
-        setShadow();
-
         return textView;
     }
 
     @Override
     protected void setViewSize(int size) {
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
+        textSize = size;
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, size );
     }
 
     @Override
@@ -75,7 +81,9 @@ public class ResizableTextView extends ResizableLayout implements IEffectable {
         if(fontId>=0 && fontId<Assets.fonts.size()){
             Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), Assets.fonts.get(fontId));
             textView.setTypeface(typeface);
+            setShadow(shadow == null? new Shadow() : shadow);
             this.fontId = fontId;
+            this.textSize = getViewSize();
         }
     }
 
@@ -123,12 +131,24 @@ public class ResizableTextView extends ResizableLayout implements IEffectable {
         return textView;
     }
 
-    public void setShadow(){
-        float dx = 10.0f;
-        float dy = 10.0f;
-        textView.setShadowLayer(8.0f, 10.0f, 10.0f, Color.parseColor("#77000000"));
-        int padding = (int) Math.max(dx, dy);
-        textView.setPadding(padding, padding, padding, padding);
+
+    @Override
+    public void setShadow(Shadow shadow) {
+        this.shadow = shadow;
+
+        textView.setShadowLayer(shadow.radius, shadow.dx, shadow.dy, shadow.color);
+
+        textView.setPadding((int)(shadow.radius+shadow.dx), (int)(shadow.radius+shadow.dy),
+                (int)(shadow.radius+shadow.dx), (int)(shadow.radius+shadow.dy));
+        shadowWidth = (int) ((shadow.radius + shadow.dx)*2);
+        shadowHeight = (int) ((shadow.radius + shadow.dy)*2);
+        setViewSize(textSize);
+    }
+
+
+    @Override
+    public Shadow getShadow() {
+        return shadow;
     }
 
     private class CustomTextView extends TextView {

@@ -77,6 +77,8 @@ public class ShadowFragment extends Fragment implements IEffectFragment, SeekBar
         seekBarDx.setOnSeekBarChangeListener(this);
         seekBarDy.setOnSeekBarChangeListener(this);
 
+        mListener.onCreated(view.getMeasuredHeight());
+
         return view;
     }
 

@@ -48,7 +48,7 @@ public class Assets {
 
     public static enum ItemType {
         BACKGROUND (new Effect[]{Effect.COLOR}),
-        RESIZABLE_TEXTVIEW (new Effect[]{Effect.FONT, Effect.COLOR}),
+        RESIZABLE_TEXTVIEW (new Effect[]{Effect.FONT, Effect.COLOR, Effect.SHADOW}),
         RESIZABLE_DRAWABLE (new Effect[]{Effect.SHAPE, Effect.COLOR, Effect.SHADOW});
 
         public final Effect[] effects;
