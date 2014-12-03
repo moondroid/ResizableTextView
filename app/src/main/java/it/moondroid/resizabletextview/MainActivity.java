@@ -117,7 +117,8 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
             public void onClick(View v) {
                 //Toast.makeText(MainActivity.this, "add image", Toast.LENGTH_SHORT).show();
                 deselectAll();
-                addResizableView(new ResizableDrawable(MainActivity.this));
+                ResizableDrawable drawable = new ResizableDrawable(MainActivity.this);
+                addResizableView(drawable);
                 floatingActionsMenu.collapse();
             }
         });

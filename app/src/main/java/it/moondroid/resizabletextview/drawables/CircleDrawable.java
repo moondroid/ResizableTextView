@@ -11,27 +11,18 @@ import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PixelFormat;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 
-public class CircleDrawable extends Drawable {
-
-    private Paint paint;
+public class CircleDrawable extends BaseDrawable {
 
     public CircleDrawable(Bitmap bitmap) {
-//        BitmapShader shader;
-//        shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP,
-//                Shader.TileMode.CLAMP);
-//        paint.setShader(shader);
-
-        paint = new Paint();
-        paint.setColor(Color.WHITE);
-        paint.setAntiAlias(true);
-        paint.setStyle(Paint.Style.FILL);
-
+        super(bitmap);
     }
 
     @Override
     public void draw(Canvas canvas) {
+
         int height = getBounds().height();
         int width = getBounds().width();
 
@@ -41,23 +32,10 @@ public class CircleDrawable extends Drawable {
         float rad = half;
         mid = mid - half;
 
-        canvas.drawCircle(mid + half, half, rad, paint);
+
+        canvas.drawCircle(mid + half , half, rad, paint);
 
     }
 
-    @Override
-    public void setAlpha(int alpha) {
-        paint.setAlpha(alpha);
-    }
-
-    @Override
-    public void setColorFilter(ColorFilter cf) {
-        paint.setColorFilter(cf);
-    }
-
-    @Override
-    public int getOpacity() {
-        return PixelFormat.TRANSLUCENT;
-    }
 
 }

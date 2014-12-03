@@ -1,5 +1,7 @@
 package it.moondroid.resizabletextview;
 
+import it.moondroid.resizabletextview.entities.Shadow;
+
 /**
  * Created by marco.granatiero on 21/11/2014.
  */
@@ -16,4 +18,7 @@ public interface IEffectable {
 
     public int getStickerId();
     public void setStickerId(int stickerId);
+
+    public void setShadow(Shadow shadow);
+    public Shadow getShadow();
 }

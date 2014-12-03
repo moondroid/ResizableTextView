@@ -13,21 +13,11 @@ import android.graphics.PixelFormat;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 
-public class RectDrawable extends Drawable {
+public class RectDrawable extends BaseDrawable {
 
-    private Paint paint;
 
     public RectDrawable(Bitmap bitmap) {
-//        BitmapShader shader;
-//        shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP,
-//                Shader.TileMode.CLAMP);
-//        paint.setShader(shader);
-
-        paint = new Paint();
-        paint.setColor(Color.WHITE);
-        paint.setAntiAlias(true);
-        paint.setStyle(Paint.Style.FILL);
-
+        super(bitmap);
     }
 
     @Override
@@ -46,19 +36,5 @@ public class RectDrawable extends Drawable {
         canvas.drawRoundRect(new RectF(0, 0, width, height), radius, radius,  paint);
     }
 
-    @Override
-    public void setAlpha(int alpha) {
-        paint.setAlpha(alpha);
-    }
-
-    @Override
-    public void setColorFilter(ColorFilter cf) {
-        paint.setColorFilter(cf);
-    }
-
-    @Override
-    public int getOpacity() {
-        return PixelFormat.TRANSLUCENT;
-    }
 
 }

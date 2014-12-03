@@ -10,6 +10,6 @@
 
     <string name="effect_font">Fonts</string>
     <string name="effect_color">Colors</string>
-
+    <string name="effect_shadow">Shadow</string>
 
 </resources>

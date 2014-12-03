@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.FrameLayout;
 
+import it.moondroid.resizabletextview.entities.Shadow;
+
 /**
  * Created by marco.granatiero on 05/11/2014.
  */
@@ -25,10 +27,9 @@ public abstract class ResizableLayout extends FrameLayout implements IEffectable
     private Point pivot;
     private boolean isEditingEnabled;
 
-    private Integer width = null;
-    private Integer height = null;
+    protected Integer width = null;
+    protected Integer height = null;
 
-    protected int drawableId;
 
     private OnResizableLayoutListener listener = new OnResizableLayoutListener() {
 
@@ -272,7 +273,6 @@ public abstract class ResizableLayout extends FrameLayout implements IEffectable
                 Log.d("ResizableTextView.onTouch ACTION_UP", "endScale = " + endScale);
                 startScale = endScale;
                 findViewById(R.id.size_view).setSelected(false);
-                setDrawableId(drawableId);
             }
 
             return true;
@@ -281,6 +281,7 @@ public abstract class ResizableLayout extends FrameLayout implements IEffectable
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+
         if ((width != null) && (height != null)) {
             super.onMeasure(width, height);
         } else {
@@ -402,5 +403,15 @@ public abstract class ResizableLayout extends FrameLayout implements IEffectable
     @Override
     public void setStickerId(int stickerId) {
 
+    }
+
+    @Override
+    public void setShadow(Shadow shadow) {
+
+    }
+
+    @Override
+    public Shadow getShadow(){
+        return new Shadow();
     }
 }

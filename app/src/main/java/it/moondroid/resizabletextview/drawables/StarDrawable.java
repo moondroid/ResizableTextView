@@ -13,22 +13,12 @@ import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 
-public class StarDrawable extends Drawable {
+public class StarDrawable extends BaseDrawable {
 
-    private Paint paint;
     private Path path;
 
     public StarDrawable(Bitmap bitmap) {
-//        BitmapShader shader;
-//        shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP,
-//                Shader.TileMode.CLAMP);
-//        paint.setShader(shader);
-
-        paint = new Paint();
-        paint.setColor(Color.WHITE);
-        paint.setAntiAlias(true);
-        paint.setStyle(Paint.Style.STROKE);
-
+        super(bitmap);
         path = new Path();
     }
 
@@ -72,19 +62,5 @@ public class StarDrawable extends Drawable {
 
     }
 
-    @Override
-    public void setAlpha(int alpha) {
-        paint.setAlpha(alpha);
-    }
-
-    @Override
-    public void setColorFilter(ColorFilter cf) {
-        paint.setColorFilter(cf);
-    }
-
-    @Override
-    public int getOpacity() {
-        return PixelFormat.TRANSLUCENT;
-    }
 
 }

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
+import it.moondroid.resizabletextview.entities.Shadow;
+
 /**
  * Created by marco.granatiero on 21/11/2014.
  */
@@ -66,5 +68,15 @@ public class EffectableImageView extends ImageView implements IEffectable {
     @Override
     public void setStickerId(int stickerId) {
 
+    }
+
+    @Override
+    public void setShadow(Shadow shadow) {
+
+    }
+
+    @Override
+    public Shadow getShadow() {
+        return new Shadow();
     }
 }

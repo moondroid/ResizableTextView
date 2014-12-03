@@ -6,9 +6,14 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import java.lang.reflect.InvocationTargetException;
+
+import it.moondroid.resizabletextview.drawables.BaseDrawable;
+import it.moondroid.resizabletextview.drawables.CircleDrawable;
+import it.moondroid.resizabletextview.entities.Shadow;
 
 /**
  * Created by marco.granatiero on 05/11/2014.
@@ -20,11 +25,17 @@ public class ResizableDrawable extends ResizableLayout {
 
     private Context context;
     private ImageView imageView;
-
+    private BaseDrawable drawable;
+    private int drawableId;
+    private int drawableSize;
+    private Shadow shadow = new Shadow();
+    private int shadowWidth = 0;
+    private int shadowHeight = 0;
     private int colorId;
 
     public ResizableDrawable(Context context) {
         super(context);
+        setLayerType(LAYER_TYPE_SOFTWARE, null);
         this.context = context;
     }
 
@@ -34,6 +45,7 @@ public class ResizableDrawable extends ResizableLayout {
         imageView = new ImageView(context);
         imageView.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
+//        imageView.setPadding(0, 0, 10, 10);
         setDrawableId(0);
 
         return imageView;
@@ -41,9 +53,10 @@ public class ResizableDrawable extends ResizableLayout {
 
     @Override
     protected void setViewSize(int size) {
+        drawableSize = size;
         LayoutParams params = (LayoutParams) imageView.getLayoutParams();
-        params.height = size;
-        params.width = size;
+        params.height = size + shadowHeight;
+        params.width = size + shadowWidth;
         imageView.setLayoutParams(params);
     }
 
@@ -77,6 +90,16 @@ public class ResizableDrawable extends ResizableLayout {
     }
 
     @Override
+    public int getFontId() {
+        return 0;
+    }
+
+    @Override
+    public void setFontId(int fontId) {
+
+    }
+
+    @Override
     public int getDrawableId(){
         return drawableId;
     }
@@ -84,25 +107,41 @@ public class ResizableDrawable extends ResizableLayout {
     @Override
     public void setDrawableId(int drawableId){
 
-        int drawableSize = DRAWABLE_DEFAULT_SIZE;
-        if(getMeasuredWidth()!=0 && getMeasuredHeight()!=0){
-            drawableSize = getMeasuredWidth();
-        }
-
-        Drawable drawable = Assets.getDrawable(drawableId, drawableSize, drawableSize);
+        drawable = (BaseDrawable) Assets.getDrawable(drawableId, DRAWABLE_DEFAULT_SIZE, DRAWABLE_DEFAULT_SIZE);
         if(drawable != null){
             imageView.setImageDrawable(drawable);
-
-            Bitmap bitmap = Assets.getBitmapFromDrawable(drawable, drawableSize, drawableSize);
-            if (bitmap!=null){
-                imageView.setImageBitmap(Assets.addShadow(bitmap));
-            }
-
+            setShadow(shadow == null? new Shadow() : shadow);
         }
-
-
+        this.drawableSize = getViewSize();
         this.drawableId = drawableId;
+
+    }
+
+    @Override
+    public int getStickerId() {
+        return 0;
+    }
+
+    @Override
+    public void setStickerId(int stickerId) {
+
+    }
+
+    @Override
+    public void setShadow(Shadow shadow) {
+        this.shadow = shadow;
+        drawable.getPaint().setShadowLayer(shadow.radius, 5.0f, 5.0f, 0xFF000000);
+
+        imageView.setPadding((int)shadow.radius, (int)shadow.radius, (int)shadow.radius, (int)shadow.radius);
+        shadowWidth = (int) (shadow.radius*2);
+        shadowHeight = (int) (shadow.radius*2);
+        setViewSize(drawableSize);
+
     }
 
 
+    @Override
+    public Shadow getShadow() {
+        return shadow;
+    }
 }
