@@ -40,7 +40,10 @@ import java.util.Locale;
 import java.util.Random;
 
 
-public class MainActivity extends Activity implements FontsFragment.OnFontSelectedListener, PaletteFragment.OnColorSelectedListener{
+public class MainActivity extends Activity implements
+        FontsFragment.OnFontSelectedListener,
+        PaletteFragment.OnColorSelectedListener,
+        ShadowFragment.OnShadowSelectedListener {
 
     private static final int REQUEST_CODE_SELECT_PICTURE = 1;
 
@@ -322,6 +325,7 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
             //slidingUpPanelLayout.setPanelHeight((int) getResources().getDimension(R.dimen.panel_height));
             slidingUpPanelLayout.setAnchorPoint(slidingUpPanelAnchor);
             slidingUpPanelLayout.expandPanel(slidingUpPanelAnchor);
+
         }
 
     }
@@ -450,4 +454,12 @@ public class MainActivity extends Activity implements FontsFragment.OnFontSelect
     }
 
 
+    @Override
+    public void onCreated(int height) {
+        //slidingUpPanelLayout.setPanelHeight(height);
+        Log.d("MainActivity", "height: "+height);
+        float panelHeight = (120.0f * getResources().getDisplayMetrics().density + 0.5f)/(slidingUpPanelLayout.getHeight()); //120dp
+        slidingUpPanelLayout.setAnchorPoint(panelHeight);
+        slidingUpPanelLayout.expandPanel(panelHeight);
+    }
 }

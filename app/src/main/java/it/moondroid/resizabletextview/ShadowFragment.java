@@ -25,31 +25,32 @@ import it.sephiroth.android.library.widget.HListView;
 /**
  * Created by Marco on 08/11/2014.
  */
-public class ShadowFragment extends Fragment implements IEffectFragment {
+public class ShadowFragment extends Fragment implements IEffectFragment, SeekBar.OnSeekBarChangeListener {
 
-    private OnDrawableSelectedListener mListener;
+    private OnShadowSelectedListener mListener;
     private IEffectable mEffectableItem;
     private Shadow mShadow;
 
-    public interface OnDrawableSelectedListener {
-        public void onDrawableSelected(int drawableId);
+    public interface OnShadowSelectedListener {
+        public void onCreated(int height);
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnDrawableSelectedListener) activity;
+            mListener = (OnShadowSelectedListener) activity;
         } catch (ClassCastException e) {
             //throw new ClassCastException(activity.toString() + " must implement OnStickerSelectedListener");
-            Log.w("DrawablesFragment", activity.toString() + " must implement OnDrawableSelectedListener");
-            mListener = new OnDrawableSelectedListener() {
+            Log.w("DrawablesFragment", activity.toString() + " must implement OnShadowSelectedListener");
+            mListener = new OnShadowSelectedListener() {
                 @Override
-                public void onDrawableSelected(int stickerId) {
+                public void onCreated(int height) {
                     //do nothing
                 }
             };
         }
+
     }
 
     @Override
@@ -66,31 +67,46 @@ public class ShadowFragment extends Fragment implements IEffectFragment {
 
         mShadow = mEffectableItem.getShadow();
         SeekBar seekBarRadius = (SeekBar)view.findViewById(R.id.seekBarRadius);
+        SeekBar seekBarDx = (SeekBar)view.findViewById(R.id.seekBarDx);
+        SeekBar seekBarDy = (SeekBar)view.findViewById(R.id.seekBarDy);
         seekBarRadius.setProgress((int) mShadow.radius);
+        seekBarDx.setProgress((int) mShadow.dx);
+        seekBarDy.setProgress((int) mShadow.dy);
 
-        seekBarRadius.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if(fromUser){
-                    mShadow.radius = seekBar.getProgress();
-                    mEffectableItem.setShadow(mShadow);
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
+        seekBarRadius.setOnSeekBarChangeListener(this);
+        seekBarDx.setOnSeekBarChangeListener(this);
+        seekBarDy.setOnSeekBarChangeListener(this);
 
         return view;
     }
 
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        if(fromUser){
+            switch (seekBar.getId()){
+                case R.id.seekBarRadius:
+                    mShadow.radius = seekBar.getProgress();
+                    break;
+                case R.id.seekBarDx:
+                    mShadow.dx = seekBar.getProgress();
+                    break;
+                case R.id.seekBarDy:
+                    mShadow.dy = seekBar.getProgress();
+                    break;
+            }
 
+            mEffectableItem.setShadow(mShadow);
+        }
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
+    }
 
 }
