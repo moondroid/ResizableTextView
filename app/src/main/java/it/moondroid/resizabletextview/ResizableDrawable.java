@@ -130,11 +130,13 @@ public class ResizableDrawable extends ResizableLayout {
     @Override
     public void setShadow(Shadow shadow) {
         this.shadow = shadow;
-        drawable.getPaint().setShadowLayer(shadow.radius, 5.0f, 5.0f, 0xFF000000);
+        float dx = 5.0f;
+        float dy = 5.0f;
+        drawable.getPaint().setShadowLayer(shadow.radius, 5.0f, 5.0f, 0xAA000000);
 
-        imageView.setPadding((int)shadow.radius, (int)shadow.radius, (int)shadow.radius, (int)shadow.radius);
-        shadowWidth = (int) (shadow.radius*2);
-        shadowHeight = (int) (shadow.radius*2);
+        imageView.setPadding((int)(shadow.radius+dx), (int)(shadow.radius+dy), (int)(shadow.radius+dx), (int)(shadow.radius+dy));
+        shadowWidth = (int) ((shadow.radius + dx)*2);
+        shadowHeight = (int) ((shadow.radius + dy)*2);
         setViewSize(drawableSize);
 
     }
