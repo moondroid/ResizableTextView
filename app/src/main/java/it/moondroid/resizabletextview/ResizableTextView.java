@@ -1,11 +1,15 @@
 package it.moondroid.resizabletextview;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
+import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.util.TypedValue;
 import android.view.View;
@@ -28,9 +32,10 @@ public class ResizableTextView extends ResizableLayout implements IEffectable {
     private int fontId;
     private int colorId;
     private int textSize;
+    private int patternId;
 
     private Context context;
-    private TextView textView;
+    private ShadableTextView textView;
 
     private Shadow shadow = new Shadow();
     private int shadowWidth = 0;
@@ -44,7 +49,7 @@ public class ResizableTextView extends ResizableLayout implements IEffectable {
     @Override
     protected View getResizableView(Context context) {
         //textView = new CustomTextView(context);
-        textView = new TextView(context);
+        textView = new ShadableTextView(context);
         textView.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         textView.setText(TEXT_DEFAULT);
@@ -133,10 +138,32 @@ public class ResizableTextView extends ResizableLayout implements IEffectable {
 
 
     @Override
+    public int getPatternId() {
+        return patternId;
+    }
+
+    @Override
+    public void setPatternId(int patternId) {
+
+//        Bitmap patternBMP = Assets.getBitmapFromAsset(context, Assets.patterns.get(patternId));
+//        //create shader
+//        BitmapShader patternBMPshader = new BitmapShader(patternBMP,
+//                Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+//
+//        //color and shader
+//        textView.getPaint().setColor(0xFFFFFFFF);
+//        textView.getPaint().setShader(patternBMPshader);
+
+        textView.setPattern(Assets.patterns.get(patternId));
+        textView.invalidate();
+    }
+
+    @Override
     public void setShadow(Shadow shadow) {
         this.shadow = shadow;
 
-        textView.setShadowLayer(shadow.radius, shadow.dx, shadow.dy, shadow.color);
+        //textView.setShadowLayer(shadow.radius, shadow.dx, shadow.dy, shadow.color);
+        textView.setShadow(shadow);
 
         textView.setPadding((int)(shadow.radius+shadow.dx), (int)(shadow.radius+shadow.dy),
                 (int)(shadow.radius+shadow.dx), (int)(shadow.radius+shadow.dy));
@@ -188,4 +215,6 @@ public class ResizableTextView extends ResizableLayout implements IEffectable {
 //            invalidate();
         }
     }
+
+
 }
