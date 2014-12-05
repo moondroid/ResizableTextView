@@ -23,7 +23,7 @@ public class StarDrawable extends BaseDrawable {
     }
 
     @Override
-    public void draw(Canvas canvas) {
+    protected void drawShape(Canvas canvas, Paint paint){
         int height = getBounds().height();
         int width = getBounds().width();
 

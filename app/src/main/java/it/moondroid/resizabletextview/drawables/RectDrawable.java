@@ -21,7 +21,7 @@ public class RectDrawable extends BaseDrawable {
     }
 
     @Override
-    public void draw(Canvas canvas) {
+    protected void drawShape(Canvas canvas, Paint paint){
         int height = getBounds().height();
         int width = getBounds().width();
 
@@ -35,6 +35,5 @@ public class RectDrawable extends BaseDrawable {
         int radius = 10; // note this is actual pixels
         canvas.drawRoundRect(new RectF(0, 0, width, height), radius, radius,  paint);
     }
-
 
 }

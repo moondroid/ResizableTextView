@@ -4,9 +4,14 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RectShape;
+import android.graphics.drawable.shapes.RoundRectShape;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +21,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import it.moondroid.resizabletextview.drawables.BaseDrawable;
@@ -26,30 +30,30 @@ import it.sephiroth.android.library.widget.HListView;
 /**
  * Created by Marco on 08/11/2014.
  */
-public class DrawablesFragment extends Fragment implements IEffectFragment, AdapterView.OnItemClickListener {
+public class PatternsFragment extends Fragment implements IEffectFragment, AdapterView.OnItemClickListener {
 
-    private static final String DRAWABLE_ID = "DrawablesFragment.DRAWABLE_ID";
+    private static final String PATTERN_ID = "PatternsFragment.DRAWABLE_ID";
     private int DRAWABLE_DEFAULT_SIZE;
-    private static final int DRAWABLE_DEFAULT_COLOR = Color.GRAY;
+    private static final int DRAWABLE_DEFAULT_COLOR = Color.WHITE;
     private HListView mListView;
-    private OnDrawableSelectedListener mListener;
+    private OnPatternSelectedListener mListener;
     private IEffectable mEffectableItem;
 
-    public interface OnDrawableSelectedListener {
-        public void onDrawableSelected(int drawableId);
+    public interface OnPatternSelectedListener {
+        public void onPatternSelected(int drawableId);
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnDrawableSelectedListener) activity;
+            mListener = (OnPatternSelectedListener) activity;
         } catch (ClassCastException e) {
             //throw new ClassCastException(activity.toString() + " must implement OnStickerSelectedListener");
             Log.w("DrawablesFragment", activity.toString() + " must implement OnDrawableSelectedListener");
-            mListener = new OnDrawableSelectedListener() {
+            mListener = new OnPatternSelectedListener() {
                 @Override
-                public void onDrawableSelected(int stickerId) {
+                public void onPatternSelected(int stickerId) {
                     //do nothing
                 }
             };
@@ -62,10 +66,10 @@ public class DrawablesFragment extends Fragment implements IEffectFragment, Adap
         mEffectableItem = effectableItem;
     }
 
-    public static DrawablesFragment newInstance(int drawableId){
-        DrawablesFragment f = new DrawablesFragment();
+    public static PatternsFragment newInstance(int drawableId){
+        PatternsFragment f = new PatternsFragment();
         Bundle args = new Bundle();
-        args.putInt(DRAWABLE_ID, drawableId);
+        args.putInt(PATTERN_ID, drawableId);
         f.setArguments(args);
         return f;
     }
@@ -77,9 +81,9 @@ public class DrawablesFragment extends Fragment implements IEffectFragment, Adap
 
         mListView = (HListView)view.findViewById(R.id.hListEffects);
 
-        List<Class<? extends BaseDrawable>> items = Assets.drawables;
+        List<String> items = Assets.patterns;
         //mAdapter = new TestAdapter( this, R.layout.test_item_1, android.R.id.text1, items );
-        ArrayAdapter<Class<? extends BaseDrawable>> adapter = new ArrayAdapter<Class<? extends BaseDrawable>>(getActivity(), R.layout.item_sticker, items) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.item_sticker, items) {
 
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
@@ -87,9 +91,10 @@ public class DrawablesFragment extends Fragment implements IEffectFragment, Adap
                 View rowView = inflater.inflate(R.layout.item_sticker, parent, false);
                 ImageView imageView = (ImageView)rowView.findViewById(R.id.sticker);
 
-                BaseDrawable drawable = Assets.getDrawable(position, DRAWABLE_DEFAULT_SIZE, DRAWABLE_DEFAULT_SIZE);
+                BaseDrawable drawable = Assets.getDrawable(0, DRAWABLE_DEFAULT_SIZE, DRAWABLE_DEFAULT_SIZE);
                 if(drawable != null){
                     drawable.setColorFilter(DRAWABLE_DEFAULT_COLOR, PorterDuff.Mode.MULTIPLY);
+                    drawable.setPattern(getContext(), Assets.patterns.get(position));
                     imageView.setImageDrawable(drawable);
                 }
 
@@ -101,7 +106,7 @@ public class DrawablesFragment extends Fragment implements IEffectFragment, Adap
         mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
         //int item = getArguments().getInt(DRAWABLE_ID, 0);
-        int item = mEffectableItem.getDrawableId();
+        int item = mEffectableItem.getPatternId();
         mListView.setItemChecked(item, true);
         mListView.smoothScrollToPosition(item);
         return view;
@@ -110,8 +115,8 @@ public class DrawablesFragment extends Fragment implements IEffectFragment, Adap
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         mListView.setItemChecked(i, true);
-        mEffectableItem.setDrawableId(i);
-        mListener.onDrawableSelected(i);
+        mEffectableItem.setPatternId(i);
+        mListener.onPatternSelected(i);
     }
 
 }

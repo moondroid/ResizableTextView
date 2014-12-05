@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
+import it.moondroid.resizabletextview.drawables.BaseDrawable;
 import it.moondroid.resizabletextview.drawables.CircleDrawable;
 import it.moondroid.resizabletextview.drawables.RectDrawable;
 import it.moondroid.resizabletextview.drawables.StarDrawable;
@@ -33,7 +34,8 @@ public class Assets {
         FONT (R.drawable.ic_text_format, R.string.effect_font, FontsFragment.class),
         COLOR (R.drawable.ic_image_palette, R.string.effect_color, PaletteFragment.class),
         SHAPE (R.drawable.ic_drawables, R.string.effect_color, DrawablesFragment.class),
-        SHADOW (R.drawable.ic_shadow, R.string.effect_shadow, ShadowFragment.class);
+        SHADOW (R.drawable.ic_shadow, R.string.effect_shadow, ShadowFragment.class),
+        PATTERN (R.drawable.ic_pattern, R.string.effect_pattern, PatternsFragment.class);
 
         public final int iconId;
         public final int labelId;
@@ -49,7 +51,7 @@ public class Assets {
     public static enum ItemType {
         BACKGROUND (new Effect[]{Effect.COLOR}),
         RESIZABLE_TEXTVIEW (new Effect[]{Effect.FONT, Effect.COLOR, Effect.SHADOW}),
-        RESIZABLE_DRAWABLE (new Effect[]{Effect.SHAPE, Effect.COLOR, Effect.SHADOW});
+        RESIZABLE_DRAWABLE (new Effect[]{Effect.SHAPE, Effect.COLOR, Effect.PATTERN, Effect.SHADOW});
 
         public final Effect[] effects;
 
@@ -62,7 +64,8 @@ public class Assets {
     public static ArrayList<String> fonts = new ArrayList<String>();
     public static ArrayList<Integer> colors = new ArrayList<Integer>();
     public static ArrayList<String> stickers = new ArrayList<String>();
-    public static ArrayList<Class<? extends Drawable>> drawables = new ArrayList<Class<? extends Drawable>>();
+    public static ArrayList<String> patterns = new ArrayList<String>();
+    public static ArrayList<Class<? extends BaseDrawable>> drawables = new ArrayList<Class<? extends BaseDrawable>>();
 
     static {
         effects.add(Effect.FONT);
@@ -114,6 +117,14 @@ public class Assets {
         drawables.add(RectDrawable.class);
         drawables.add(CircleDrawable.class);
         drawables.add(StarDrawable.class);
+
+        patterns.add("patterns/pattern0.jpg");
+        patterns.add("patterns/pattern1.jpg");
+        patterns.add("patterns/pattern2.jpg");
+        patterns.add("patterns/pattern_dots_21.jpg");
+        patterns.add("patterns/pattern_dots_24.jpg");
+        patterns.add("patterns/pattern_dots_25.jpg");
+        patterns.add("patterns/pattern_dots_26.jpg");
     }
 
     public static Bitmap getBitmapFromAsset(Context context, String file) {
@@ -195,8 +206,8 @@ public class Assets {
         }
     }
 
-    public static Drawable getDrawable(int drawableId, int width, int height){
-        Drawable drawable = null;
+    public static BaseDrawable getDrawable(int drawableId, int width, int height){
+        BaseDrawable drawable = null;
         try {
             Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
             drawable = drawables.get(drawableId).getConstructor(Bitmap.class).newInstance(bitmap);

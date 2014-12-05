@@ -19,6 +19,9 @@ public interface IEffectable {
     public int getStickerId();
     public void setStickerId(int stickerId);
 
+    public int getPatternId();
+    public void setPatternId(int patternId);
+
     public void setShadow(Shadow shadow);
     public Shadow getShadow();
 }

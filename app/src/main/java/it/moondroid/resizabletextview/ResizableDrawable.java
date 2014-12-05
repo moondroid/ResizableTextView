@@ -32,6 +32,7 @@ public class ResizableDrawable extends ResizableLayout {
     private int shadowWidth = 0;
     private int shadowHeight = 0;
     private int colorId;
+    private int patternId;
 
     public ResizableDrawable(Context context) {
         super(context);
@@ -89,15 +90,7 @@ public class ResizableDrawable extends ResizableLayout {
         }
     }
 
-    @Override
-    public int getFontId() {
-        return 0;
-    }
 
-    @Override
-    public void setFontId(int fontId) {
-
-    }
 
     @Override
     public int getDrawableId(){
@@ -107,10 +100,11 @@ public class ResizableDrawable extends ResizableLayout {
     @Override
     public void setDrawableId(int drawableId){
 
-        drawable = (BaseDrawable) Assets.getDrawable(drawableId, DRAWABLE_DEFAULT_SIZE, DRAWABLE_DEFAULT_SIZE);
+        drawable = Assets.getDrawable(drawableId, DRAWABLE_DEFAULT_SIZE, DRAWABLE_DEFAULT_SIZE);
         if(drawable != null){
-            imageView.setImageDrawable(drawable);
+            //drawable.setPattern(getContext(), "patterns/pattern2.jpg");
             setShadow(shadow == null? new Shadow() : shadow);
+            imageView.setImageDrawable(drawable);
         }
         this.drawableSize = getViewSize();
         this.drawableId = drawableId;
@@ -118,20 +112,24 @@ public class ResizableDrawable extends ResizableLayout {
     }
 
     @Override
-    public int getStickerId() {
-        return 0;
+    public int getPatternId() {
+        return patternId;
     }
 
     @Override
-    public void setStickerId(int stickerId) {
-
+    public void setPatternId(int patternId) {
+        if(drawable != null){
+            drawable.setPattern(getContext(), Assets.patterns.get(patternId));
+            imageView.invalidateDrawable(drawable);
+        }
     }
 
     @Override
     public void setShadow(Shadow shadow) {
         this.shadow = shadow;
 
-        drawable.getPaint().setShadowLayer(shadow.radius, shadow.dx, shadow.dy, shadow.color);
+//        drawable.getPaint().setShadowLayer(shadow.radius, shadow.dx, shadow.dy, shadow.color);
+        drawable.setShadow(shadow);
 
         imageView.setPadding((int)(shadow.radius+shadow.dx), (int)(shadow.radius+shadow.dy),
                 (int)(shadow.radius+shadow.dx), (int)(shadow.radius+shadow.dy));

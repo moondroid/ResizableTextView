@@ -406,6 +406,16 @@ public abstract class ResizableLayout extends FrameLayout implements IEffectable
     }
 
     @Override
+    public int getPatternId() {
+        return 0;
+    }
+
+    @Override
+    public void setPatternId(int patternId) {
+
+    }
+
+    @Override
     public void setShadow(Shadow shadow) {
 
     }
